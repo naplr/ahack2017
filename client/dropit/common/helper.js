@@ -57,4 +57,4 @@ export function postRequest(urlPath, data) {
         success: true,
         location: location
     }
-};
+}

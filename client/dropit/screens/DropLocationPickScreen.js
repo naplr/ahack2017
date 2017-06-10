@@ -81,7 +81,9 @@ export default class DropLocationPickScreen extends React.Component {
                     </Text>
                     <Button 
                         title="Pick Location"
-                        onPress={ () => this.props.navigator.push('dropTimePick', dropInfo) }
+                        onPress={ () => {
+                            this.props.navigator.push('dropTimePick', { dropInfo: dropInfo }) 
+                        }}
                     />
                 </View>
             </View>

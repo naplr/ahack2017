@@ -78,12 +78,15 @@ export default class DropTimePickScreen extends React.Component {
 
     render() {
         const { dropInfo } = this.props.route.params
+        console.log("hello world")
+        console.log(dropInfo)
         Object.assign(dropInfo, { 
             time: {
                 from: this.state.fromDate,
                 to: this.state.toDate
             }
         })
+
 
         return (
             <View style={ styles.container }>
@@ -98,12 +101,12 @@ export default class DropTimePickScreen extends React.Component {
                         <Button 
                             title="Pick Time" 
                             onPress={ () => {
-                                this.props.navigator.push('dropSummary', dropInfo)
+                                this.props.navigator.push('dropSummary', { dropInfo: dropInfo })
                             }}
                         />
                     </View>
                     { this.renderPicker() }
-              </ScrollView>
+                </ScrollView>
             </View>
         )
     }

@@ -9,6 +9,7 @@ import {
   View,
   Button,
 } from 'react-native'
+import { postRequest } from '../common/helper'
 
 export default class DropSummaryScreen extends React.Component {
     static route = {
@@ -16,6 +17,24 @@ export default class DropSummaryScreen extends React.Component {
         visible: true,
         },
     };
+
+    drop(userId, lat, lng, base64img, name, amount) {
+        postRequest('drops', {
+            userId: userId,
+            lat: lat,
+            lng: lng,
+            image: base64img,
+            name: name,
+            total_amount: amount
+        })
+            .then(res => {
+                this.props.navigator.push(
+                    'dropSuccess', {
+                        status: 'success'
+                    }
+                )
+            })
+    }
 
     render() {
         const { dropInfo } = this.props.route.params
@@ -34,11 +53,13 @@ export default class DropSummaryScreen extends React.Component {
                         </Text>
                         <Button 
                             title="DROP!!!"
-                            onPress={() => this.props.navigator.push(
-                                'dropSuccess',
-                                {
-                                    status: 'SUCCESS!!!'
-                                }
+                            onPress={() => this.drop(
+                                'u1',
+                                dropInfo.location.coords.latitude,
+                                dropInfo.location.coords.longitude,
+                                dropInfo.content.data,
+                                'Test Drop',
+                                20
                             )}
                         />
                     </View>
