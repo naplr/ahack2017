@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image, Linking, Platform, ScrollView, StyleSheet, Text, TextInput, View, Button, DatePickerIOS } from 'react-native'
-
+import moment from 'moment'
 import { sharedStyles } from '../common/const'
 
 export default class DropTimePickScreen extends React.Component {
@@ -22,7 +22,7 @@ export default class DropTimePickScreen extends React.Component {
             return (
                 <View>
                     <DatePickerIOS 
-                        date={ this.state.fromDate } 
+                        date={ moment(this.state.fromDate).format('ddd MMMM DD YYYY')}
                         onDateChange={ d => this.handleDateChange(d, 'from') } 
                         mode='date' 
                     />
@@ -40,7 +40,11 @@ export default class DropTimePickScreen extends React.Component {
         } else if (this.state.showToPicker) {
             return (
                 <View>
-                    <DatePickerIOS date={ this.state.toDate } onDateChange={ d => this.handleDateChange(d, 'to') } mode='date' />
+                    <DatePickerIOS 
+                        date={ moment(this.state.fromDate).format('ddd MMMM DD YYYY')}
+                        onDateChange={ d => this.handleDateChange(d, 'to') } 
+                        mode='date' 
+                    />
                     <Button 
                         title="Select" 
                         onPress={ () => {

@@ -24,12 +24,13 @@ export default class ViewDropScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            dropInfo: {
-                id: "ef075cd2-90c9-4e3c-b395-b5c510971d56",
-                name: "Corgi Dog",
-                creator: "John Marshall",
-                image: "https://facebook.github.io/react/img/logo_og.png"
-            },
+            dropInfo: null
+            // dropInfo: {
+            //     id: "ef075cd2-90c9-4e3c-b395-b5c510971d56",
+            //     name: "Corgi Dog",
+            //     creator: "John Marshall",
+            //     image: "https://facebook.github.io/react/img/logo_og.png"
+            // },
         }
     }
 
@@ -65,6 +66,15 @@ export default class ViewDropScreen extends React.Component {
     }
 
     render() {
+        if (this.state.dropInfo == null) {
+            return (
+                <View>
+                    <Text>
+                        Loading...
+                    </Text>
+                </View>
+            )
+        }
         return (
         <View style={styles.container}>
             <Text style={styles.getStartedText}>
