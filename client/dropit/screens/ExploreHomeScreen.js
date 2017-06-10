@@ -26,40 +26,15 @@ export default class DropContentPickScreen extends React.Component {
   constructor(props) {
       super(props)
       this.state = {
-          content: "",
+          dropId: "",
           location: null,
           errorMessage: null
       }
   }
 
   componentWillMount() {
-    // getRequest('users.json')
-    // // postRequest('posts', {userID: 9999, title: ''})
-    //     .then(res => {
-    //         this.setState({
-    //             // content: `ID:${res.userId} -- title: ${res.title}`
-    //             content: JSON.stringify(res)
-    //         })
-    //     })
-
     this._getLocationAsync()
   }
-
-//   componentDidMount() {
-//     const params = {
-//         userId: 'u2',
-//         lat: this.state.location.coords.latitude,
-//         lng: this.state.location.coords.longitude
-//     }
-
-//     getRequest('explore', params)
-//         .then(res => {
-//             this.setState({
-//                 // content: `ID:${res.userId} -- title: ${res.title}`
-//                 content: JSON.stringify(res)
-//             })
-//         })
-//   }
 
   render() {
     return (
@@ -76,23 +51,14 @@ export default class DropContentPickScreen extends React.Component {
                 { `Content: ${this.state.content}\n` }
                 { `Location: ${JSON.stringify(this.state.location)}` }
             </Text>
-                { this.state.content != ""
-                    ? (<View>
-                            <Image source={{ uri: this.state.content }} style={{ width: 200, height: 200 }} />
-                            {/*<Image source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}} style={{ width: 200, height: 200 }} />*/}
-                        </View> )
+                { this.state.dropId != ""
+                    ? <Button 
+                            title="You have picked up a drop!"
+                            onPress={() => this.props.navigator.push(
+                                'viewDrop', { dropId: this.state.dropId }
+                            )}
+                      />
                     : null }
-            <Button 
-                title="Explore"
-                onPress={() => this.props.navigator.push(
-                    'dropLocationPick',
-                    {
-                        dropInfo: {
-                            content: 'Yo me'
-                        }
-                    }
-                )}
-            />
           </View>
        </ScrollView>
       </View>
@@ -122,19 +88,31 @@ export default class DropContentPickScreen extends React.Component {
         .then(res => {
             console.log(res)
             const dropId = res
-            return getRequest(`drops/${dropId}`)
-        })
-        .then(res => {
-            console.log(res)
             this.setState({
-                // content: `ID:${res.userId} -- title: ${res.title}`
-                // content: JSON.stringify(res)
-                content: res.image
+                dropId: dropId
             })
         })
         .catch(r => {
             console.log(r.message)
         })
+
+    // getRequest('explore', params)
+    //     .then(res => {
+    //         console.log(res)
+    //         const dropId = res
+    //         return getRequest(`drops/${dropId}`)
+    //     })
+    //     .then(res => {
+    //         console.log(res)
+    //         this.setState({
+    //             // content: `ID:${res.userId} -- title: ${res.title}`
+    //             // content: JSON.stringify(res)
+    //             content: res.image
+    //         })
+    //     })
+    //     .catch(r => {
+    //         console.log(r.message)
+    //     })
   };
 
   _maybeRenderDevelopmentModeWarning() {

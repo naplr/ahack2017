@@ -10,7 +10,7 @@ import DropTimePickScreen from '../screens/DropTimePickScreen'
 import DropSummaryScreen from '../screens/DropSummaryScreen'
 import DropSuccessScreen from '../screens/DropSuccessScreen'
 import ExploreHomeScreen from '../screens/ExploreHomeScreen'
-import ViwDropScreen from '../screens/ViewDropScreen'
+import ViewDropScreen from '../screens/ViewDropScreen'
 import KeepDropSuccessScreen from '../screens/KeepDropSuccessScreen'
 
 export default createRouter(() => ({
