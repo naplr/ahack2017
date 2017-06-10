@@ -24,7 +24,8 @@ export default class ViewDropScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            dropInfo: null
+            dropInfo: null,
+            status: "Loading..."
             // dropInfo: {
             //     id: "ef075cd2-90c9-4e3c-b395-b5c510971d56",
             //     name: "Corgi Dog",
@@ -32,17 +33,29 @@ export default class ViewDropScreen extends React.Component {
             //     image: "https://facebook.github.io/react/img/logo_og.png"
             // },
         }
+
+        this.keepDrop = this.keepDrop.bind(this)
     }
 
     componentWillMount() {
         const { dropId } = this.props.route.params
+        this.setState({
+            status: "Waiting " + dropId
+        })
+
         getRequest(`drops/${dropId}`)
             .then(res => {
                 this.setState({
-                    id: res.id,
-                    name: res.name,
-                    creator: res.creator,
-                    image: res.image,
+                    status: "Received " + dropId
+                })
+
+                this.setState({
+                    dropInfo: {
+                        id: res.id,
+                        name: res.name,
+                        creator: res.creator,
+                        image: res.image,
+                    }
                 })
             })
             .catch(r => {
@@ -51,6 +64,10 @@ export default class ViewDropScreen extends React.Component {
     }
 
     keepDrop() {
+        this.setState({
+            status: JSON.stringify(this.state.dropInfo)
+        }) 
+
         postRequest('collected-drop', {
             userId: 'u2',
             dropId: this.state.dropInfo.id
@@ -59,7 +76,7 @@ export default class ViewDropScreen extends React.Component {
                 if (res.success) {
                     this.props.navigator.push(
                         'keepDropSuccess', {
-                            name: this.state.name
+                            name: this.state.dropInfo.name
                     })
                 }
             })
@@ -68,9 +85,9 @@ export default class ViewDropScreen extends React.Component {
     render() {
         if (this.state.dropInfo == null) {
             return (
-                <View>
+                <View style={styles.container}>
                     <Text>
-                        Loading...
+                        { this.state.status }
                     </Text>
                 </View>
             )
@@ -84,26 +101,13 @@ export default class ViewDropScreen extends React.Component {
                 { this.state.dropInfo.name }
             </Text>
 
-            <Text style={styles.getStartedText}>
-                { `Content: ${this.state.dropId}\n` }
-                { `Location: ${JSON.stringify(this.state.location)}` }
-            </Text>
-                { this.state.content != ""
+                { this.state.dropInfo.image != "" && this.state.dropInfo.image != null
                     ? <Image source={{ uri: this.state.dropInfo.image }} style={{ width: 200, height: 200 }} />
                     : null }
+
             <Text style={styles.getStartedText}>
                 { `drop by: ${this.state.dropInfo.creator}` }
             </Text>
-            {/*<Button 
-                title="Discard"
-                onPress={() => this.props.navigator.push(
-                    'exploreHomeScreen'
-                )}
-            />*/}
-            {/*<Button 
-                title="Keep"
-                onPress={ this.keepDrop }
-            />*/}
             <View style={{flexDirection:'row', justifyContent:'space-around'}}>
               <View style={{flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
                 <TouchableHighlight 
@@ -114,7 +118,7 @@ export default class ViewDropScreen extends React.Component {
                 >
                   <Image
                     style={styles.AddImageButton}
-                    source={require('./trashloadbutton.png')}
+                    source={require('./trashbutton.png')}
                   />
                 </TouchableHighlight> 
                 <View style={{marginTop: 5 }}>
