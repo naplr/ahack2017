@@ -35,13 +35,22 @@ class FilterViewSet(viewsets.ModelViewSet):
 def get_nearby_location(lat,lng,user):
     nearby = Drop.objects.filter(Q(from_date__isnull=True) | Q(from_date__lte=datetime.datetime.utcnow())) \
         .filter(Q(to_date__isnull=True) | Q(to_date__gte=datetime.datetime.utcnow())) \
-        .filter(total_amount__gt=0, lat__lt=float(lat) + 0.1, lat__gt=float(lat) - 0.1, lng__lt=float(lng) + 0.1, lng__gt=float(lng) - 0.1) \
+        .filter(total_amount__gt=0, lat__lt=float(lat) + 0.01, lat__gt=float(lat) - 0.01, lng__lt=float(lng) + 0.01, lng__gt=float(lng) - 0.01) \
         .exclude(creator=user) \
         .exclude(receiver=user)
 
     if len(nearby)==0:
         return ''
-    return nearby[0].id
+
+    min = 1000000000
+    min_drop = None
+    for n in nearby:
+        new_dist = gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng)
+        if new_dist < min:
+            min = new_dist
+            min_drop = n
+    #return JsonResponse([n.id for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
+    return min_drop.id
 
 def explore(request):
     if request.method == 'GET':
