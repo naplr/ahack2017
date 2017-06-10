@@ -56,12 +56,6 @@ export default class HomeScreen extends React.Component {
             </Text>
           </View>
 
-        <View>
-          <Text onPress={this._handlePress}>
-            Hello World
-            </Text>
-        </View>
-
           <View style={styles.helpContainer}>
             <TouchableOpacity
               onPress={this._handleHelpPress}
