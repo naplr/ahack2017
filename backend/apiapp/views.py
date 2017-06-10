@@ -1,13 +1,15 @@
-from django.shortcuts import render
-from .serializers import *
-from rest_framework import viewsets
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed
-from .models import *
 import json
-from django.views.decorators.csrf import csrf_exempt
+
+import datetime
+import gpxpy.geo
 import gpxpy.geo
 from django.db.models import Q
-import datetime
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import viewsets
+
+from .serializers import *
+
 
 # Create your views here.
 class ApiUserViewSet(viewsets.ModelViewSet):
@@ -30,6 +32,16 @@ class FilterViewSet(viewsets.ModelViewSet):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
 
+def get_nearby_location(lat,lng,user):
+    nearby = Drop.objects.filter(Q(from_date__isnull=True) | Q(from_date__lte=datetime.datetime.utcnow())) \
+        .filter(Q(to_date__isnull=True) | Q(to_date__gte=datetime.datetime.utcnow())) \
+        .filter(total_amount__gt=0, lat__lt=float(lat) + 0.1, lat__gt=float(lat) - 0.1, lng__lt=float(lng) + 0.1, lng__gt=float(lng) - 0.1) \
+        .exclude(creator=user) \
+        .exclude(receiver=user)
+
+    if len(nearby)==0:
+        return ''
+    return nearby[0].id
 
 def explore(request):
     # TODO CHECK TIME
@@ -44,17 +56,17 @@ def explore(request):
         lng = request.GET.get('lng', None)
         if (lng is None):
             return HttpResponseBadRequest('must provide lng')
+
         try:
             user = ApiUser.objects.get(userId=user_id)
         except ApiUser.DoesNotExist:
             return HttpResponseBadRequest('user with that ID not found')
 
-        nearby = Drop.objects.filter(Q(from_date__isnull=True) | Q(from_date__lte=datetime.datetime.utcnow()))\
-            .filter(Q(to_date__isnull=True) | Q(to_date__gte=datetime.datetime.utcnow()))\
-            .filter(total_amount__gt=0, lat__lt=float(lat) + 0.1, lat__gt=float(lat) - 0.1, lng__lt=float(lng) + 0.1, lng__gt=float(lng) - 0.1)\
-            .exclude(creator=user)\
-            .exclude(receiver=user)  # exclude drops create and receive by this
-        return JsonResponse([n.id for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
+        nearby = get_nearby_location(lat,lng,user)
+        #return JsonResponse([n.id for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
+
+        return JsonResponse(nearby, safe=False)
+
     else:
         return HttpResponseNotAllowed('use GET only')
 
@@ -84,8 +96,8 @@ def collect_drop(request):
         # TODO maybe check specific user haven't got this drop already
         # TODO receiver ain't the creator!
         # TODO expired!
-        #user.drop_received.add(drop)
-        #user.save()
+        # user.drop_received.add(drop)
+        # user.save()
         UserDrop.objects.create(user=user, drop=drop)
         drop.total_amount = drop.total_amount - 1
         drop.save()

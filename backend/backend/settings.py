@@ -11,7 +11,15 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import socket
 
+try:
+    HOSTNAME = socket.gethostname()
+except:
+    HOSTNAME = 'localhost'
+
+print('==hostname==')
+print(HOSTNAME == 'pan-Lenovo-YOGA-700-14ISK')
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -135,10 +143,18 @@ MEDIA_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__))+'/media/
 print(MEDIA_ROOT)
 MEDIA_URL = '/media/'
 
+if HOSTNAME == 'pan-Lenovo-YOGA-700-14ISK':
+    drc = (
+            'rest_framework.renderers.JSONRenderer',
+            'rest_framework.renderers.BrowsableAPIRenderer',
+        )
+else:
+    drc = (
+            'rest_framework.renderers.JSONRenderer',
+        )
+
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-    ],
+    'DEFAULT_RENDERER_CLASSES': drc,
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
     ),

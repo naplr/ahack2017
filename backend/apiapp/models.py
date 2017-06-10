@@ -1,15 +1,8 @@
-from django.conf import settings
-from django.utils import timezone
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from location_field.models.plain import PlainLocationField
-from django.db import models
-from django.utils import timezone
-from geoposition.fields import GeopositionField
-from django.utils.dateformat import format
-
 import uuid
 
-if hasattr(settings, 'PROJECT_NAME') and settings.PROJECT_NAME == 'edhip': import vinaigrette
+from django.contrib.auth.models import BaseUserManager
+from django.db import models
+from django.utils import timezone
 
 
 class Filter(models.Model):
@@ -72,6 +65,7 @@ class ApiUser(models.Model):
 
     def __str__(self):
         return self.userId
+
 
 class UserDrop(models.Model):
     user = models.ForeignKey(ApiUser, on_delete=models.CASCADE)

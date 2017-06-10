@@ -1,9 +1,7 @@
-from rest_framework import serializers
-from .models import *
 from drf_extra_fields.fields import Base64ImageField
-from geoposition.fields import GeopositionField
-from geoposition import Geoposition
-from django.utils.dateformat import format
+from rest_framework import serializers
+
+from .models import *
 
 
 class UnixEpochDateField(serializers.DateTimeField):
@@ -43,8 +41,8 @@ class DropSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         userId = validated_data.pop('userId')
-        # 'token' will be in data if successful
         drop_obj = super(DropSerializer, self).create(validated_data)
+        print(userId)
         creator = ApiUser.objects.get(userId=userId)
         creator.drop_created.add(drop_obj)
         creator.save()
@@ -53,7 +51,6 @@ class DropSerializer(serializers.ModelSerializer):
     class Meta:
         model = Drop
         fields = (['name', 'id', 'userId', 'lat', 'lng', 'image', 'total_amount', 'from_date', 'to_date'])
-        # read_only_fields = ('image', 'name')
 
 
 class FilterSerializer(serializers.ModelSerializer):
