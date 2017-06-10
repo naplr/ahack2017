@@ -72,51 +72,66 @@ export default class DropSummaryScreen extends React.Component {
                             Summary
                         </Text>
                     </View>
-                    <View>
-                        <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
-                            <Text style={sharedStyles.fontMain}>
-                                {`Content: ${dropInfo.content.data}\n`}
-                            </Text>
-                            <View style={{ width:335, flex:1, flexDirection:'row', justifyContent:'space-between' }}>
-                                <Text style={sharedStyles.fontMain}>
-                                    Location:
-                                </Text>
-                                <Text style={sharedStyles.fontMain}>
-                                    {`${dropInfo.location.coords.latitude}\n`}
-                                </Text>
-                            </View>
-                            <View style={{ width:335, flex:1, flexDirection:'row', justifyContent:'flex-end' }}> 
-                                <Text style={sharedStyles.fontMain}>
-                                    {`${dropInfo.location.coords.longitude}\n`}
-                                </Text>
-                            </View>
 
-                            <View style={{ width:335, flex:1, flexDirection:'row', justifyContent:'space-between' }}>
+                    <View style={{width: 335, flexDirection:'row',justifyContent:'flex-start', marginTop:20 }}>
+                        <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
+                    </View>
+
+                    <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
+                        <View style={{ width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center', marginTop: 20 }}>
+                            <Text style={sharedStyles.fontMain}>
+                                Location:
+                            </Text>
+                            <Text style={sharedStyles.fontMain}>
+                                {`${dropInfo.location.coords.latitude}`}
+                            </Text>
+                        </View>
+  
+                        <View style={{width:335, flexDirection:'row', justifyContent:'flex-end',alignItems:'center' }}> 
+                            <Text style={sharedStyles.fontMain}>
+                                {`${dropInfo.location.coords.longitude}`}
+                            </Text>
+                        </View>
+                        <View style={{ flexDirection:'collumn', justifyContent:'space-between',marginTop: 20}}>
+                            <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}>
                                 <Text style={sharedStyles.fontMain}>
                                     Time:
                                 </Text>   
                                 <Text style={sharedStyles.fontMain}>
-                                    {`${dropInfo.time.from} - ${dropInfo.time.to}\n`}
+                                    {`${dropInfo.time.from}`}
                                 </Text>
                             </View>
+                            <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}>
+                                <Text style={sharedStyles.fontMain}>
+                                    To:
+                                </Text>  
+                                <Text style={sharedStyles.fontMain}>
+                                    {`${dropInfo.time.to}`}
+                                </Text>
+                            </View>
+                        </View> 
 
-                            {/*<Text style={styles.getStartedText}>
-                                {`error: ${this.state.errorMessage}\n`}
-                            </Text>*/}
+                        {/*<Text style={styles.getStartedText}>
+                            {`error: ${this.state.errorMessage}\n`}
+                        </Text>*/}
+
+
+                        <View style={{marginTop:'auto', marginBottom: 35}}>
+                            <Button
+                                color='#C42E34'
+                                title="DROP IT! >"
+                                onPress={() => this.drop(
+                                        'u1',
+                                        'Test Drop',
+                                        20,
+                                        dropInfo.content.data,
+                                        dropInfo.location.coords.latitude,
+                                        dropInfo.location.coords.longitude,
+                                        dropInfo.time.from,
+                                        dropInfo.time.to,
+                                    )}
+                            />
                         </View>
-                        <Button 
-                            title="DROP!!!"
-                            onPress={() => this.drop(
-                                'u1',
-                                'Test Drop',
-                                20,
-                                dropInfo.content.data,
-                                dropInfo.location.coords.latitude,
-                                dropInfo.location.coords.longitude,
-                                dropInfo.time.from,
-                                dropInfo.time.to,
-                            )}
-                        />
                     </View>
 
             </View>
