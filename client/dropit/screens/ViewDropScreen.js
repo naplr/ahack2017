@@ -12,130 +12,91 @@ import {
 } from 'react-native';
 
 import { MapView, Constants, Location, Permissions } from 'expo';
-
-import { MonoText } from '../components/StyledText';
 import { getRequest, postRequest } from '../common/helper'
 
-export default class DropContentPickScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      visible: false,
-    },
-  };
+export default class ViewDropScreen extends React.Component {
+    static route = {
+        navigationBar: {
+        visible: false,
+        },
+    };
 
-  constructor(props) {
-      super(props)
-      this.state = {
-          content: "",
-          location: null,
-          errorMessage: null
-      }
-  }
+    constructor(props) {
+        super(props)
+        this.state = {
+            dropInfo: {
+                id: "ef075cd2-90c9-4e3c-b395-b5c510971d56",
+                name: "Corgi Dog",
+                creator: "John Marshall",
+                image: "https://facebook.github.io/react/img/logo_og.png"
+            },
+        }
+    }
 
-  componentWillMount() {
-    // getRequest('users.json')
-    // // postRequest('posts', {userID: 9999, title: ''})
-    //     .then(res => {
-    //         this.setState({
-    //             // content: `ID:${res.userId} -- title: ${res.title}`
-    //             content: JSON.stringify(res)
-    //         })
-    //     })
+    componentWillMount() {
+        const { dropId } = this.props.route.params
+        getRequest(`drops/${dropId}`)
+            .then(res => {
+                this.setState({
+                    id: res.id,
+                    name: res.name,
+                    creator: res.creator,
+                    image: res.image,
+                })
+            })
+            .catch(r => {
+                console.log(r.message)
+            })
+    }
 
-    this._getLocationAsync()
-  }
+    keepDrop() {
+        postRequest('collected-drop', {
+            userId: 'u2',
+            dropId: this.state.dropInfo.id
+        })
+            .then(res => {
+                if (res.success) {
+                    this.props.navigator.push(
+                        'keepDropSuccess', {
+                            name: this.state.name
+                    })
+                }
+            })
+    }
 
-//   componentDidMount() {
-//     const params = {
-//         userId: 'u2',
-//         lat: this.state.location.coords.latitude,
-//         lng: this.state.location.coords.longitude
-//     }
-
-//     getRequest('explore', params)
-//         .then(res => {
-//             this.setState({
-//                 // content: `ID:${res.userId} -- title: ${res.title}`
-//                 content: JSON.stringify(res)
-//             })
-//         })
-//   }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
-
-          <View style={styles.getStartedContainer}>
+    render() {
+        return (
+        <View style={styles.container}>
             <Text style={styles.getStartedText}>
-                "Explore!!"
+                "You have picked up"
             </Text>
+            <Text style={styles.getStartedText}>
+                { this.state.dropInfo.name }
+            </Text>
+
             <Text style={styles.getStartedText}>
                 { `Content: ${this.state.content}\n` }
                 { `Location: ${JSON.stringify(this.state.location)}` }
             </Text>
                 { this.state.content != ""
-                    ? (<View>
-                            <Image source={{ uri: this.state.content }} style={{ width: 200, height: 200 }} />
-                            {/*<Image source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}} style={{ width: 200, height: 200 }} />*/}
-                        </View> )
+                    ? <Image source={{ uri: this.state.dropInfo.image }} style={{ width: 200, height: 200 }} />
                     : null }
+            <Text style={styles.getStartedText}>
+                { `drop by: ${this.state.dropInfo.creator}` }
+            </Text>
             <Button 
-                title="Explore"
+                title="Discard"
                 onPress={() => this.props.navigator.push(
-                    'dropLocationPick',
-                    {
-                        dropInfo: {
-                            content: 'Yo me'
-                        }
-                    }
+                    'home'
                 )}
             />
-          </View>
-       </ScrollView>
-      </View>
-    );
-  }
-
-    _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-      this.setState({
-        errorMessage: 'Permission to access location was denied',
-      });
+            <Button 
+                title="Keep"
+                onPress={ this.keepDrop }
+            />
+        </View>
+        );
     }
-
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location });
-
-    const params = {
-        userId: 'u2',
-        lat: location.coords.latitude,
-        lng: location.coords.longitude
-    }
-
-    console.log(params)
-
-    getRequest('explore', params)
-        .then(res => {
-            console.log(res)
-            const dropId = res
-            return getRequest(`drops/${dropId}`)
-        })
-        .then(res => {
-            console.log(res)
-            this.setState({
-                // content: `ID:${res.userId} -- title: ${res.title}`
-                // content: JSON.stringify(res)
-                content: res.image
-            })
-        })
-        .catch(r => {
-            console.log(r.message)
-        })
-  };
 
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
