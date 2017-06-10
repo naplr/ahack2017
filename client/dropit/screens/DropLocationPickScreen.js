@@ -14,6 +14,8 @@ import {
 import { getLocationAsync } from '../common/helper'
 import { MapView, Constants, Location, Permissions } from 'expo'
 
+import { sharedStyles } from '../common/const'
+
 export default class DropLocationPickScreen extends React.Component {
     static route = {
         navigationBar: {
@@ -72,15 +74,19 @@ export default class DropLocationPickScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                <View style={{ height: 400 }}>
+                <View style={sharedStyles.title}>
+                    <Text style={sharedStyles.fontMainBig}>
+                        Select Location
+                    </Text>
+                </View>
+                <View style={{ height: 400}}>
                     { this.renderMap() }
                 </View>
-                <View style={styles.getStartedContainer}>
-                    <Text style={styles.getStartedText}>
-                        "It's ok'"
-                    </Text>
-                    <Button 
-                        title="Pick Location"
+                
+                <View style={{marginTop:'auto', marginBottom: 35}}>
+                    <Button
+                        color='#C42E34'
+                        title="Continue >"
                         onPress={ () => {
                             this.props.navigator.push('dropTimePick', { dropInfo: dropInfo }) 
                         }}
@@ -131,62 +137,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 15,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 80,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 23,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+
 });

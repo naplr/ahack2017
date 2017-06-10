@@ -1,6 +1,8 @@
 import React from 'react'
 import { Image, Linking, Platform, ScrollView, StyleSheet, Text, TextInput, View, Button, DatePickerIOS } from 'react-native'
 
+import { sharedStyles } from '../common/const'
+
 export default class DropTimePickScreen extends React.Component {
     static route = {
         navigationBar: {
@@ -25,6 +27,7 @@ export default class DropTimePickScreen extends React.Component {
                         mode='date' 
                     />
                     <Button 
+                        
                         title="Select" 
                         onPress={ () => { 
                             this.setState({
@@ -86,24 +89,74 @@ export default class DropTimePickScreen extends React.Component {
         })
 
         return (
-            <View style={ styles.container }>
-                <ScrollView style={ styles.container } contentContainerStyle={ styles.contentContainer }>
-                    <View style={ styles.getStartedContainer }>
-                        <Text onPress={ () => this.showPicker('from') }>
-                            { `From: ${this.state.fromDate}` }
+            <View style={sharedStyles.container}>
+                <View style={sharedStyles.title}>
+                    <Text style={sharedStyles.fontMainBig}>
+                        Select Time
+                    </Text>
+                </View>
+
+                <View style={{flex:1, flexDirection:'column', justifyContent:'center', alignItems:'center' }}>
+                    <View style={{
+                        height:60,
+                        width: 335, 
+                        flexDirection:'row', 
+                        justifyContent:'space-between',
+                        alignItems:'center', borderBottomWidth:1, 
+                        borderColor:'#9B9B9B'}}
+                    >
+                        <Text style={sharedStyles.fontGreyBig}>
+                            From:
                         </Text>
-                        <Text onPress={ () => this.showPicker('to') }>
-                            { `To: ${this.state.toDate}` }
+                        <Text 
+                        style={sharedStyles.fontGreyBig}
+                        onPress={ () => this.showPicker('from') }>
+                            { `${this.state.fromDate}` }
                         </Text>
-                        <Button 
-                            title="Pick Time" 
-                            onPress={ () => {
-                                this.props.navigator.push('dropSummary', { dropInfo: dropInfo })
-                            }}
-                        />
                     </View>
+
+                    <View style={{
+                        height:60,
+                        width: 335, 
+                        flexDirection:'row', 
+                        justifyContent:'space-between',
+                        alignItems:'center', borderBottomWidth:1, 
+                        borderColor:'#9B9B9B'}}
+                    >
+                        <Text style={sharedStyles.fontGreyBig}>
+                            To:
+                        </Text>
+                        <Text
+                        style={sharedStyles.fontGreyBig} 
+                        onPress={ () => this.showPicker('to') }>
+                            { `${this.state.toDate}` }
+                        </Text>
+                    </View>
+                </View>
+
+                <View style={{width:'100%'}}>
                     { this.renderPicker() }
-                </ScrollView>
+                </View>    
+                
+                <View style={{marginTop:'auto', marginBottom: 35}}>
+                    <Button
+                        color='#C42E34'
+                        title="Continue >"
+                        onPress={ () => {
+                            this.props.navigator.push('dropSummary', { dropInfo: dropInfo })
+                        }}
+                    />
+                </View>
+                {/*<View>
+                    <Button 
+                        title="Pick Time" 
+                        onPress={ () => {
+                            this.props.navigator.push('dropSummary', { dropInfo: dropInfo })
+                        }}
+                    />
+                </View>*/}
+
+ 
             </View>
         )
     }
@@ -133,60 +186,60 @@ export default class DropTimePickScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    developmentModeText: {
-        marginBottom: 20,
-        color: 'rgba(0,0,0,0.4)',
-        fontSize: 15,
-        textAlign: 'center',
-    },
-    contentContainer: {
-        paddingTop: 80,
-    },
-    getStartedContainer: {
-        alignItems: 'center',
-        marginHorizontal: 50,
-    },
-    tabBarInfoContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+//     container: {
+//         flex: 1,
+//         backgroundColor: '#fff',
+//     },
+//     developmentModeText: {
+//         marginBottom: 20,
+//         color: 'rgba(0,0,0,0.4)',
+//         fontSize: 15,
+//         textAlign: 'center',
+//     },
+//     contentContainer: {
+//         paddingTop: 80,
+//     },
+//     getStartedContainer: {
+//         alignItems: 'center',
+//         marginHorizontal: 50,
+//     },
+//     tabBarInfoContainer: {
+//         position: 'absolute',
+//         bottom: 0,
+//         left: 0,
+//     right: 0,
+//     ...Platform.select({
+//       ios: {
+//         shadowColor: 'black',
+//         shadowOffset: { height: -3 },
+//         shadowOpacity: 0.1,
+//         shadowRadius: 3,
+//       },
+//       android: {
+//         elevation: 20,
+//       },
+//     }),
+//     alignItems: 'center',
+//     backgroundColor: '#fbfbfb',
+//     paddingVertical: 20,
+//   },
+//   tabBarInfoText: {
+//     fontSize: 17,
+//     color: 'rgba(96,100,109, 1)',
+//     textAlign: 'center',
+//   },
+//   navigationFilename: {
+//     marginTop: 5,
+//   },
+//   helpContainer: {
+//     marginTop: 15,
+//     alignItems: 'center',
+//   },
+//   helpLink: {
+//     paddingVertical: 15,
+//   },
+//   helpLinkText: {
+//     fontSize: 14,
+//     color: '#2e78b7',
+//   },
 });

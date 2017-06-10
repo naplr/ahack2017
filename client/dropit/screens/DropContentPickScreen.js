@@ -37,8 +37,8 @@ export default class DropContentPickScreen extends React.Component {
   render() {
       let { image } = this.state
     return (
-      <View style={styles.container}>
-        <View style={{ width:'100%', height: 45, flexDirection:'row', justifyContent:'flex-start', paddingLeft:10, marginTop:10 }}>
+      <View style={sharedStyles.container}>
+        {/*<View style={{ width:'100%', height: 45, flexDirection:'row', justifyContent:'flex-start', paddingLeft:10, marginTop:10 }}>
           <Button
             color='#C42E34'
             title="< Back"
@@ -51,59 +51,67 @@ export default class DropContentPickScreen extends React.Component {
                 }
             )}
           />
-        </View>
+        </View>*/}
 
-        <View style={{ flexDirection:'column', justifyContent:'center',alignItems:'center' }}>
+        {image &&
+            <View style={sharedStyles.fontMainBig}>
+              <Text style={sharedStyles.fontMainBig}>
+                You've Selected
+              </Text>
+            </View>
+          }
+
+        <View style={{ flex:1, flexDirection:'column', justifyContent:'center',alignItems:'center' }}>
           { !image &&
-          <View style={{ flexDirection:'column', justifyContent:'center',alignItems:'center' }}>
-            <View style={{ height: 85, width: 85 }}>
-            <TouchableHighlight 
-              onPress={this._pickImage}
-              underlayColor='#F7F7F7'
-              >
-              {/*<Svg height={85} width={85}>
-                <Svg.Circle
-                  cx={42.5}
-                  cy={42.5}
-                  r={40}
-                  strokeWidth={1.5}
-                  stroke="#9B9B9B"
-                  fill="#white"
+          <View style={{ flex:1, flexDirection:'column', justifyContent:'center',alignItems:'center' }}>
+            <View style={{ height: 85, width: 85, marginTop:10 }}>
+              <TouchableHighlight 
+                onPress={this._pickImage}
+                underlayColor='#F7F7F7'
+                >
+                {/*<Svg height={85} width={85}>
+                  <Svg.Circle
+                    cx={42.5}
+                    cy={42.5}
+                    r={40}
+                    strokeWidth={1.5}
+                    stroke="#9B9B9B"
+                    fill="#white"
+                  />
+                  <Svg.Rect
+                    x={35}
+                    y={12.5}
+                    width={15}
+                    height={60}
+                    strokeWidth={0}
+                    stroke="rgba (0,0,0,0)"
+                    fill="#9B9B9B"
+                  />
+                  <Svg.Rect
+                    x={12.5}
+                    y={35}
+                    width={60}
+                    height={15}
+                    strokeWidth={0}
+                    stroke="rgba (0,0,0,0)"
+                    fill="#9B9B9B"
+                  />
+                </Svg>*/}
+                <Image
+                  style={styles.AddImageButton}
+                  source={require('./AddImageButton.png')}
                 />
-                <Svg.Rect
-                  x={35}
-                  y={12.5}
-                  width={15}
-                  height={60}
-                  strokeWidth={0}
-                  stroke="rgba (0,0,0,0)"
-                  fill="#9B9B9B"
-                />
-                <Svg.Rect
-                  x={12.5}
-                  y={35}
-                  width={60}
-                  height={15}
-                  strokeWidth={0}
-                  stroke="rgba (0,0,0,0)"
-                  fill="#9B9B9B"
-                />
-              </Svg>*/}
-              <Image
-                style={styles.AddImageButton}
-                source={require('./AddImageButton.png')}
-              />
-            </TouchableHighlight>
+              </TouchableHighlight>
             </View>
             <View style={{marginTop: 5 }}>
               <Text style={sharedStyles.fontGrey}>
-                  "Add Image to drop"
+                Add Image to drop
               </Text>
             </View> 
           </View> }
 
           {image &&
-          <View>
+          <View style={{ flexDirection:'column', justifyContent:'center' }}>
             <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
             <View style={{ width:300, flexDirection:'row', justifyContent:'flex-start', marginLeft:-10 }}>
               {/*<FontAwesome
@@ -137,7 +145,7 @@ export default class DropContentPickScreen extends React.Component {
           </Text>
         </View>*/}
 
-        <View style={{marginBottom: 45}}>
+        <View style={{marginTop:'auto', marginBottom: 35}}>
           <Button
             color='#C42E34'
             title="Continue >"
@@ -208,10 +216,10 @@ export default class DropContentPickScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F3F3F3',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-start'
   },
 
   AddImageButton: {
