@@ -47,26 +47,50 @@ export default class DropNamePickScreen extends React.Component {
 
         return (
             <View style={sharedStyles.container}>
-                <View>
-                    <TextInput
-                        value={this.state.name}
-                        onChangeText={this.handleNameChange}
-                        style={{ width: 200, height: 44, padding: 8 }}
-                    />
+              <View style={{flexDirection:'row', justifyContent:'center', marginTop:84, marginBottom:10}}>
+                  <Text style={sharedStyles.fontMainBig}>
+                      Name/Amount
+                  </Text>
+              </View>
+              <View style={{flex:1, flexDirection:'column', justifyContent:'center', alignItems:'center' }}>
+                <View style={{
+                    width: 335, 
+                    flexDirection:'row', 
+                    justifyContent:'center',
+                    alignItems:'center', borderBottomWidth:1, 
+                    borderColor:'#9B9B9B'}}
+                >
+                  <TextInput
+                      value={this.state.name}
+                      onChangeText={this.handleNameChange}
+                      style={{ width: 335, height: 60, padding: 8 ,fontSize: 16}}
+                      color='#9B9B9B'
+                  />
                 </View>
-                <View>
+                <View style={{
+                    
+                    width: 335, 
+                    flexDirection:'row', 
+                    justifyContent:'center',
+                    alignItems:'center', borderBottomWidth:1, 
+                    borderColor:'#9B9B9B'}}
+                >
                     <TextInput
                         value={this.state.amount}
                         onChangeText={this.handleAmountChange}
                         keyboardType='number-pad'
-                        style={{ width: 200, height: 44, padding: 8 }}
+                        style={{ width: 200, height: 60, padding: 8,fontSize: 16  }}
+                        color='#9B9B9B'
                     />
                 </View>
-                <Button
-                    color='#C42E34'
-                    title="Continue >"
-                    onPress={() => this.props.navigator.push('dropLocationPick', { dropInfo: dropInfo }) }
-                />
+              </View>
+              <View style={{marginTop:'auto', marginBottom: 35}}>
+                  <Button
+                      color='#C42E34'
+                      title="Continue >"
+                      onPress={() => this.props.navigator.push('dropLocationPick', { dropInfo: dropInfo }) }
+                  />
+              </View>
             </View> 
         )
     }

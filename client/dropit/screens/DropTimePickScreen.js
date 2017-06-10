@@ -22,7 +22,7 @@ export default class DropTimePickScreen extends React.Component {
             return (
                 <View>
                     <DatePickerIOS 
-                        date={ moment(this.state.fromDate).format('ddd MMMM DD YYYY')}
+                        date={this.state.fromDate}
                         onDateChange={ d => this.handleDateChange(d, 'from') } 
                         mode='date' 
                     />
@@ -41,7 +41,7 @@ export default class DropTimePickScreen extends React.Component {
             return (
                 <View>
                     <DatePickerIOS 
-                        date={ moment(this.state.fromDate).format('ddd MMMM DD YYYY')}
+                        date={this.state.toDate}
                         onDateChange={ d => this.handleDateChange(d, 'to') } 
                         mode='date' 
                     />
@@ -99,6 +99,7 @@ export default class DropTimePickScreen extends React.Component {
                         Select Time
                     </Text>
                 </View>
+                <Text>{ moment(this.state.fromDate).format('ddd MMMM DD YYYY')}</Text>
 
                 <View style={{flex:1, flexDirection:'column', justifyContent:'center', alignItems:'center' }}>
                     <View style={{

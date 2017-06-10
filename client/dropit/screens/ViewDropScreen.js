@@ -76,7 +76,7 @@ export default class ViewDropScreen extends React.Component {
             )
         }
         return (
-        <View style={styles.container}>
+        <View style={sharedStyles.container}>
             <Text style={styles.getStartedText}>
                 "You have picked up"
             </Text>
@@ -94,17 +94,54 @@ export default class ViewDropScreen extends React.Component {
             <Text style={styles.getStartedText}>
                 { `drop by: ${this.state.dropInfo.creator}` }
             </Text>
-            <Button 
+            {/*<Button 
                 title="Discard"
                 onPress={() => this.props.navigator.push(
                     'exploreHomeScreen'
                 )}
-            />
-            <Button 
+            />*/}
+            {/*<Button 
                 title="Keep"
                 onPress={ this.keepDrop }
-            />
-        </View>
+            />*/}
+            <View style={{flexDirection:'row', justifyContent:'space-around'}}>
+              <View style={{flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
+                <TouchableHighlight 
+                underlayColor='#F7F7F7'
+                onPress={() => this.props.navigator.push(
+                          'exploreHomeScreen'
+                      )}
+                >
+                  <Image
+                    style={styles.AddImageButton}
+                    source={require('./trashloadbutton.png')}
+                  />
+                </TouchableHighlight> 
+                <View style={{marginTop: 5 }}>
+                  <Text style={sharedStyles.fontGrey}>
+                    discard
+                  </Text>
+                </View>
+              </View> 
+              <View style={{flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}> 
+                <TouchableHighlight 
+                onPress={ this.keepDrop }
+                underlayColor='#F7F7F7'
+                >
+                  <Image
+                    style={styles.AddImageButton}
+                    source={require('./downloadbutton.png')}
+                  />
+                </TouchableHighlight>
+
+                <View style={{marginTop: 5 }}>
+                  <Text style={sharedStyles.fontGrey}>
+                    keep
+                  </Text>
+                </View>
+              </View> 
+            </View> 
+          </View>  
         );
     }
 

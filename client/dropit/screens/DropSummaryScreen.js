@@ -67,73 +67,66 @@ export default class DropSummaryScreen extends React.Component {
         console.log(dropInfo)
         return (
             <View style={sharedStyles.container}>
-                    <View style={sharedStyles.title}>
-                        <Text style={sharedStyles.fontMainBig}>
-                            Summary
+                <View style={sharedStyles.title}>
+                    <Text style={sharedStyles.fontMainBig}>
+                        Summary
+                    </Text>
+                </View>
+
+                <View style={{width: 335, flexDirection:'row',justifyContent:'flex-start', marginTop:20, backgroundColor:'#ffffff' }}>
+                    <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
+                </View>
+
+                <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
+                    <View style={{ width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center', marginTop: 60 }}>
+                        <Text style={sharedStyles.fontMain}>
+                            Location:
+                        </Text>
+                        <Text style={sharedStyles.fontMain}>
+                            {`${dropInfo.location.coords.latitude}`}
                         </Text>
                     </View>
 
-                    <View style={{width: 335, flexDirection:'row',justifyContent:'flex-start', marginTop:20 }}>
-                        <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
+                    <View style={{width:335, flexDirection:'row', justifyContent:'flex-end',alignItems:'center' }}> 
+                        <Text style={sharedStyles.fontMain}>
+                            {`${dropInfo.location.coords.longitude}`}
+                        </Text>
                     </View>
-
-                    <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
-                        <View style={{ width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center', marginTop: 20 }}>
+                    <View style={{ flexDirection:'column', justifyContent:'space-between',marginTop: 20}}>
+                        <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}>
                             <Text style={sharedStyles.fontMain}>
-                                Location:
-                            </Text>
+                                Time:
+                            </Text>   
                             <Text style={sharedStyles.fontMain}>
-                                {`${dropInfo.location.coords.latitude}`}
-                            </Text>
-                        </View>
-  
-                        <View style={{width:335, flexDirection:'row', justifyContent:'flex-end',alignItems:'center' }}> 
-                            <Text style={sharedStyles.fontMain}>
-                                {`${dropInfo.location.coords.longitude}`}
+                                {`${dropInfo.time.from}`}
                             </Text>
                         </View>
-                        <View style={{ flexDirection:'collumn', justifyContent:'space-between',marginTop: 20}}>
-                            <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}>
-                                <Text style={sharedStyles.fontMain}>
-                                    Time:
-                                </Text>   
-                                <Text style={sharedStyles.fontMain}>
-                                    {`${dropInfo.time.from}`}
-                                </Text>
-                            </View>
-                            <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}>
-                                <Text style={sharedStyles.fontMain}>
-                                    To:
-                                </Text>  
-                                <Text style={sharedStyles.fontMain}>
-                                    {`${dropInfo.time.to}`}
-                                </Text>
-                            </View>
-                        </View> 
-
-                        {/*<Text style={styles.getStartedText}>
-                            {`error: ${this.state.errorMessage}\n`}
-                        </Text>*/}
-
-
-                        <View style={{marginTop:'auto', marginBottom: 35}}>
-                            <Button
-                                color='#C42E34'
-                                title="DROP IT! >"
-                                onPress={() => this.drop(
-                                        'u1',
-                                        'Test Drop',
-                                        20,
-                                        dropInfo.content.data,
-                                        dropInfo.location.coords.latitude,
-                                        dropInfo.location.coords.longitude,
-                                        dropInfo.time.from,
-                                        dropInfo.time.to,
-                                    )}
-                            />
+                        <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}>
+                            <Text style={sharedStyles.fontMain}>
+                                To:
+                            </Text>  
+                            <Text style={sharedStyles.fontMain}>
+                                {`${dropInfo.time.to}`}
+                            </Text>
                         </View>
-                    </View>
-
+                    </View> 
+                </View>
+                <View style={{marginTop:'auto', marginBottom: 35}}>
+                    <Button
+                        color='#C42E34'
+                        title="DROP IT! >"
+                        onPress={() => this.drop(
+                                'u1',
+                                'Test Drop',
+                                20,
+                                dropInfo.content.data,
+                                dropInfo.location.coords.latitude,
+                                dropInfo.location.coords.longitude,
+                                dropInfo.time.from,
+                                dropInfo.time.to,
+                            )}
+                    />
+                </View>
             </View>
         )
     }
