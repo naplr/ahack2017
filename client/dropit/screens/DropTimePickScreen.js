@@ -27,7 +27,7 @@ export default class DropTimePickScreen extends React.Component {
                         mode='date' 
                     />
                     <Button 
-                        
+                        color="#9B9B9B"
                         title="Select" 
                         onPress={ () => { 
                             this.setState({

@@ -10,6 +10,8 @@ import DropTimePickScreen from '../screens/DropTimePickScreen'
 import DropSummaryScreen from '../screens/DropSummaryScreen'
 import DropSuccessScreen from '../screens/DropSuccessScreen'
 import ExploreHomeScreen from '../screens/ExploreHomeScreen'
+import ViewDropScreen from '../screens/ViewDropScreen'
+import KeepDropSuccessScreen from '../screens/KeepDropSuccessScreen'
 
 export default createRouter(() => ({
   home: () => HomeScreen,
@@ -23,4 +25,6 @@ export default createRouter(() => ({
   dropSummary: () => DropSummaryScreen,
   dropSuccess: () => DropSuccessScreen,
   exploreHomeScreen: () => ExploreHomeScreen,
+  viewDrop: () => ViewDropScreen,
+  keepDropSuccess: () => KeepDropSuccessScreen,
 }));

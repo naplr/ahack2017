@@ -13,107 +13,35 @@ import {
 
 import { MapView, Constants, Location, Permissions } from 'expo';
 
-import { MonoText } from '../components/StyledText';
 import { getRequest, postRequest } from '../common/helper'
 
-export default class DropContentPickScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      visible: false,
-    },
-  };
-
-  constructor(props) {
-      super(props)
-      this.state = {
-          dropId: "",
-          location: null,
-          errorMessage: null
-      }
-  }
-
-  componentWillMount() {
-    this._getLocationAsync()
-  }
+export default class KeepDropSuccessScreen extends React.Component {
+    static route = {
+        navigationBar: {
+            visible: false,
+        },
+    };
 
   render() {
+        const { name } = this.props.route.params
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
+            <Text style={styles.getStartedText}>
+                "You have successfully keep"
+            </Text>
+            <Text style={styles.getStartedText}>
+                { name }
+            </Text>
 
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>
-                "Explore!!"
-            </Text>
-            <Text style={styles.getStartedText}>
-                { `Content: ${this.state.content}\n` }
-                { `Location: ${JSON.stringify(this.state.location)}` }
-            </Text>
-                { this.state.dropId != ""
-                    ? <Button 
-                            title="You have picked up a drop!"
-                            onPress={() => this.props.navigator.push(
-                                'viewDrop', { dropId: this.state.dropId }
-                            )}
-                      />
-                    : null }
-          </View>
-       </ScrollView>
+            <Button 
+                title="Done"
+                onPress={() => this.props.navigator.push(
+                    'home'
+                )}
+            />
       </View>
     );
   }
-
-    _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
-    if (status !== 'granted') {
-      this.setState({
-        errorMessage: 'Permission to access location was denied',
-      });
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    this.setState({ location });
-
-    const params = {
-        userId: 'u2',
-        lat: location.coords.latitude,
-        lng: location.coords.longitude
-    }
-
-    console.log(params)
-
-    getRequest('explore', params)
-        .then(res => {
-            console.log(res)
-            const dropId = res
-            this.setState({
-                dropId: dropId
-            })
-        })
-        .catch(r => {
-            console.log(r.message)
-        })
-
-    // getRequest('explore', params)
-    //     .then(res => {
-    //         console.log(res)
-    //         const dropId = res
-    //         return getRequest(`drops/${dropId}`)
-    //     })
-    //     .then(res => {
-    //         console.log(res)
-    //         this.setState({
-    //             // content: `ID:${res.userId} -- title: ${res.title}`
-    //             // content: JSON.stringify(res)
-    //             content: res.image
-    //         })
-    //     })
-    //     .catch(r => {
-    //         console.log(r.message)
-    //     })
-  };
 
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {

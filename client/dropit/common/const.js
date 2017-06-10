@@ -16,6 +16,11 @@ export const sharedStyles = StyleSheet.create({
         color: '#9B9B9B'
     },
 
+    fontMain:{
+        fontSize: 16,
+        color: '#C42E34'
+    },
+
     fontMainBig:{
         fontSize: 24,
         color: '#C42E34'
@@ -32,7 +37,7 @@ export const sharedStyles = StyleSheet.create({
     title: {
         flexDirection:'row',
         justifyContent:'center', 
-        marginTop:16, 
+        marginTop:18, 
         marginBottom:10
     },
 })
