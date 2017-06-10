@@ -75,13 +75,13 @@ export default class DropNamePickScreen extends React.Component {
                     alignItems:'center', borderBottomWidth:1, 
                     borderColor:'#9B9B9B'}}
                 >
-                    <TextInput
-                        value={this.state.amount}
-                        onChangeText={this.handleAmountChange}
-                        keyboardType='number-pad'
-                        style={{ width: 200, height: 60, padding: 8,fontSize: 16  }}
-                        color='#9B9B9B'
-                    />
+                  <TextInput
+                      value={this.state.amount}
+                      onChangeText={this.handleAmountChange}
+                      keyboardType='number-pad'
+                      style={{ width: 200, height: 60, padding: 8,fontSize: 16  }}
+                      color='#9B9B9B'
+                  />
                 </View>
               </View>
               <View style={{marginTop:'auto', marginBottom: 35}}>
