@@ -8,89 +8,84 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
+
+import { ImagePicker, Permissions } from 'expo'
 
 import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+export default class DropContentPickScreen extends React.Component {
   static route = {
     navigationBar: {
       visible: false,
     },
   };
 
+    constructor(props) {
+      super(props)
+      this.state = {
+          image: null
+      }
+  }
+
   render() {
+      let { image } = this.state
     return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
 
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../assets/images/expo-wordmark.png')}
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>
-              Get started by opening
-            </Text>
-
-            <View
-              style={[
-                styles.codeHighlightContainer,
-                styles.homeScreenFilename,
-              ]}>
-              <MonoText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </MonoText>
+           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Button
+                    title="Pick an image from camera roll"
+                    onPress={this._pickImage}
+                />
+        {image &&
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             </View>
 
+          <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>
-                "HELLO WORLD"
+                "Content Stuff"
             </Text>
+            <Button 
+                title="Pick Image"
+                onPress={() => this.props.navigator.push(
+                    'dropLocationPick',
+                    {
+                        dropInfo: {
+                            content: 'Yo me'
+                        }
+                    }
+                )}
+            />
           </View>
-
-        <View>
-          <Text onPress={this._handlePress}>
-            Hello World
-            </Text>
-        </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>
-              navigation/RootNavigation.js
-            </MonoText>
-          </View>
-        </View>
+       </ScrollView>
       </View>
     );
   }
 
-  _handlePress = () => {
-      this.props.navigator.push('contentPick', {name: 'Hello People'})
+  _pickImage = async () => {
+  const { status } = await Permissions.askAsync(Permissions.LOCATION);
+  if (status !== 'granted') {
+    throw new Error('Location permission not granted');
+  } else {
+
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
   }
+  };
 
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
@@ -114,18 +109,6 @@ export default class HomeScreen extends React.Component {
       );
     }
   }
-
-  _handleLearnMorePress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/development-mode'
-    );
-  };
-
-  _handleHelpPress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({

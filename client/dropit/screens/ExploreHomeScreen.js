@@ -8,16 +8,41 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
 
-import { MonoText } from '../components/StyledText';
+import { MapView, Constants, Location, Permissions } from 'expo';
 
-export default class HomeScreen extends React.Component {
+import { MonoText } from '../components/StyledText';
+import { getRequest, postRequest } from '../common/helper'
+
+export default class DropContentPickScreen extends React.Component {
   static route = {
     navigationBar: {
       visible: false,
     },
   };
+
+  constructor(props) {
+      super(props)
+      this.state = {
+          content: "",
+          location: null,
+          errorMessage: null
+      }
+  }
+
+  componentWillMount() {
+    getRequest('posts/1')
+    // postRequest('posts', {userID: 9999, title: ''})
+        .then(res => {
+            this.setState({
+                content: `ID:${res.userId} -- title: ${res.title}`
+            })
+        })
+
+    this._getLocationAsync()
+  }
 
   render() {
     return (
@@ -26,71 +51,42 @@ export default class HomeScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
 
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../assets/images/expo-wordmark.png')}
-              style={styles.welcomeImage}
+          <View style={styles.getStartedContainer}>
+            <Text style={styles.getStartedText}>
+                "Explore!!"
+            </Text>
+            <Text style={styles.getStartedText}>
+                { `Content: ${this.state.content}\n` }
+                { `Location: ${JSON.stringify(this.state.location)}` }
+            </Text>
+            <Button 
+                title="Explore"
+                onPress={() => this.props.navigator.push(
+                    'dropLocationPick',
+                    {
+                        dropInfo: {
+                            content: 'Yo me'
+                        }
+                    }
+                )}
             />
           </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>
-              Get started by opening
-            </Text>
-
-            <View
-              style={[
-                styles.codeHighlightContainer,
-                styles.homeScreenFilename,
-              ]}>
-              <MonoText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-                "HELLO WORLD"
-            </Text>
-          </View>
-
-        <View>
-          <Text onPress={this._handlePress}>
-            Hello World
-            </Text>
-        </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>
-              navigation/RootNavigation.js
-            </MonoText>
-          </View>
-        </View>
+       </ScrollView>
       </View>
     );
   }
 
-  _handlePress = () => {
-      this.props.navigator.push('contentPick', {name: 'Hello People'})
-  }
+    _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
+  };
 
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
@@ -114,18 +110,6 @@ export default class HomeScreen extends React.Component {
       );
     }
   }
-
-  _handleLearnMorePress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/development-mode'
-    );
-  };
-
-  _handleHelpPress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({

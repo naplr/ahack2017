@@ -6,90 +6,129 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
+  Button,
+  DatePickerIOS
 } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
 
-export default class HomeScreen extends React.Component {
+export default class DropTimePickScreen extends React.Component {
   static route = {
     navigationBar: {
-      visible: false,
+      visible: true,
     },
   };
 
+  state = {
+      fromDate: new Date(),
+      toDate: new Date(),
+      showFromPicker: false,
+      showToPicker: false,
+  }
+
+  renderPicker() {
+      if (this.state.showFromPicker) {
+          return (
+          <View>
+           <DatePickerIOS 
+                date={ this.state.fromDate } 
+                onDateChange={ d => this.handleDateChange(d, 'from') }
+                mode='date'
+            />
+                         <Button title="Select"
+                onPress={() => { this.setState({ showFromPicker: false})}}
+                />
+                </View>
+          )
+      } else if (this.state.showToPicker) {
+            return (
+            <View>
+                <DatePickerIOS 
+                date={ this.state.toDate } 
+                onDateChange={ d => this.handleDateChange(d, 'to') }
+                mode='date'
+            />
+                         <Button title="Select"
+                onPress={() => { this.setState({ showToPicker: false})}}
+                />
+                </View>
+          )
+      } else {
+          return null
+      }
+  }
+
+    //                 <TextInput
+    //     style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+    //     onChangeText={(text) => this.setState({text})}
+    //     value={this.state.text}
+    //   />
+
+  showPicker(type) {
+      console.log(`open ${type}`)
+      console.log(this.state)
+      switch(type) {
+          case 'from':
+            this.setState({ showFromPicker: true })
+            break
+          case 'to':
+            this.setState({ showToPicker: true })
+            break
+      }
+  }
+
   render() {
+    const { dropInfo } = this.props.route.params
     return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
+   
+          <View style={styles.getStartedContainer}>
+            <Text style={styles.getStartedText}>
+                { dropInfo.location}
+            </Text>
+            <Text onPress={ () => this.showPicker('from') }>
+                { `From: ${this.state.fromDate}`}
+            </Text>
+            <Text onPress={ () => this.showPicker('to') }>
+                { `To: ${this.state.toDate}`}
+            </Text>
 
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../assets/images/expo-wordmark.png')}
-              style={styles.welcomeImage}
+
+            <Button 
+                title="Pick Time"
+                onPress={() => this.props.navigator.push(
+                    'dropSummary',
+                    {
+                        dropInfo: Object.assign(
+                            dropInfo, 
+                            { time: 'my time' }
+                        )
+                    }
+                )}
             />
           </View>
+          { this.renderPicker() }
 
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>
-              Get started by opening
-            </Text>
-
-            <View
-              style={[
-                styles.codeHighlightContainer,
-                styles.homeScreenFilename,
-              ]}>
-              <MonoText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-                "HELLO WORLD"
-            </Text>
-          </View>
-
-        <View>
-          <Text onPress={this._handlePress}>
-            Hello World
-            </Text>
-        </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>
-              navigation/RootNavigation.js
-            </MonoText>
-          </View>
-        </View>
+       </ScrollView>
       </View>
     );
   }
 
-  _handlePress = () => {
-      this.props.navigator.push('contentPick', {name: 'Hello People'})
+  handleDateChange(d, type) {
+      switch(type) {
+          case 'from':
+            this.setState({fromDate: d})
+            break
+          case 'to':
+            this.setState({toDate: d})
+            break
+      }
   }
 
   _maybeRenderDevelopmentModeWarning() {
@@ -115,17 +154,9 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  _handleLearnMorePress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/development-mode'
-    );
-  };
-
-  _handleHelpPress = () => {
-    Linking.openURL(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
+  _handlePress = () => {
+      this.props.navigator.push('contentPick', {name: 'Hello People'})
+  }
 }
 
 const styles = StyleSheet.create({
