@@ -153,7 +153,10 @@ export default class DropContentPickScreen extends React.Component {
                 'dropLocationPick',
                 {
                     dropInfo: {
-                        content: 'Yo me'
+                        content: {
+                            data: this.state.data,
+                            image: this.state.image
+                        }
                     }
                 }
             )}
