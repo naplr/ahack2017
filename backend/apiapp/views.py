@@ -3,6 +3,7 @@ import json
 import datetime
 import gpxpy.geo
 import gpxpy.geo
+import requests
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
@@ -32,14 +33,15 @@ class FilterViewSet(viewsets.ModelViewSet):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
 
-def get_nearby_location(lat,lng,user):
+
+def get_nearby_location(lat, lng, user):
     nearby = Drop.objects.filter(Q(from_date__isnull=True) | Q(from_date__lte=datetime.datetime.utcnow())) \
         .filter(Q(to_date__isnull=True) | Q(to_date__gte=datetime.datetime.utcnow())) \
         .filter(total_amount__gt=0, lat__lt=float(lat) + 0.01, lat__gt=float(lat) - 0.01, lng__lt=float(lng) + 0.01, lng__gt=float(lng) - 0.01) \
         .exclude(creator=user) \
         .exclude(receiver=user)
 
-    if len(nearby)==0:
+    if len(nearby) == 0:
         return ''
 
     min = 1000000000
@@ -49,8 +51,9 @@ def get_nearby_location(lat,lng,user):
         if new_dist < min:
             min = new_dist
             min_drop = n
-    #return JsonResponse([n.id for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
+    # return JsonResponse([n.id for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
     return min_drop.id
+
 
 def explore(request):
     if request.method == 'GET':
@@ -70,8 +73,8 @@ def explore(request):
         except ApiUser.DoesNotExist:
             return HttpResponseBadRequest('user with that ID not found')
 
-        nearby = get_nearby_location(lat,lng,user)
-        #return JsonResponse([n.id for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
+        nearby = get_nearby_location(lat, lng, user)
+        # return JsonResponse([n.id for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
 
         return JsonResponse(nearby, safe=False)
 
@@ -107,7 +110,7 @@ def collect_drop(request):
         UserDrop.objects.create(user=user, drop=drop)
         drop.total_amount = drop.total_amount - 1
         drop.save()
-        return JsonResponse({"success": True},)
+        return JsonResponse({"success": True}, )
     else:
         return HttpResponseNotAllowed('use POST only')
 
@@ -126,5 +129,22 @@ def get_drops(request):
         else:
             d = Drop.objects.values_list('id', flat=True).filter(receiver__userid=user_id)
         return JsonResponse(list(d), safe=False)
+    else:
+        return HttpResponseNotAllowed('use GET only')
+
+
+def reverse_geocode(request):
+    if request.method == 'GET':
+
+        lat = request.GET.get('lat', None)
+        if (lat is None):
+            return HttpResponseBadRequest('must provide lat')
+        lng = request.GET.get('lng', None)
+        if (lng is None):
+            return HttpResponseBadRequest('must provide lng')
+
+        r = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}'.format(lat, lng))
+        print(r.json())
+        return JsonResponse(r.json(), safe=False)
     else:
         return HttpResponseNotAllowed('use GET only')
