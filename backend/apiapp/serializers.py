@@ -45,10 +45,7 @@ class DropSerializer(serializers.ModelSerializer):
         userId = validated_data.pop('userId')
         # 'token' will be in data if successful
         drop_obj = super(DropSerializer, self).create(validated_data)
-        print(drop_obj)
         creator = ApiUser.objects.get(userId=userId)
-        print('---creator--')
-        print(creator)
         creator.drop_created.add(drop_obj)
         creator.save()
         return drop_obj
