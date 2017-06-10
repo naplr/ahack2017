@@ -11,9 +11,10 @@ import {
   Button,
 } from 'react-native';
 
-import { ImagePicker, Permissions } from 'expo'
+import { MapView, Constants, Location, Permissions } from 'expo';
 
 import { MonoText } from '../components/StyledText';
+import { getRequest, postRequest } from '../common/helper'
 
 export default class DropContentPickScreen extends React.Component {
   static route = {
@@ -22,36 +23,44 @@ export default class DropContentPickScreen extends React.Component {
     },
   };
 
-    constructor(props) {
+  constructor(props) {
       super(props)
       this.state = {
-          image: null
+          content: "",
+          location: null,
+          errorMessage: null
       }
   }
 
+  componentWillMount() {
+    getRequest('posts/1')
+    // postRequest('posts', {userID: 9999, title: ''})
+        .then(res => {
+            this.setState({
+                content: `ID:${res.userId} -- title: ${res.title}`
+            })
+        })
+
+    this._getLocationAsync()
+  }
+
   render() {
-      let { image } = this.state
     return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
 
-           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Button
-                    title="Pick an image from camera roll"
-                    onPress={this._pickImage}
-                />
-        {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            </View>
-
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>
-                "Content Stuff"
+                "Explore!!"
+            </Text>
+            <Text style={styles.getStartedText}>
+                { `Content: ${this.state.content}\n` }
+                { `Location: ${JSON.stringify(this.state.location)}` }
             </Text>
             <Button 
-                title="Pick Image"
+                title="Explore"
                 onPress={() => this.props.navigator.push(
                     'dropLocationPick',
                     {
@@ -67,24 +76,16 @@ export default class DropContentPickScreen extends React.Component {
     );
   }
 
-  _pickImage = async () => {
-  const { status } = await Permissions.askAsync(Permissions.LOCATION);
-  if (status !== 'granted') {
-    throw new Error('Location permission not granted');
-  } else {
-
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
+    _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
     }
-  }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
   };
 
   _maybeRenderDevelopmentModeWarning() {

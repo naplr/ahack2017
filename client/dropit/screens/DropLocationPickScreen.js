@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
+import { getLocationAsync } from '../common/helper'
+import { MapView, Constants, Location, Permissions } from 'expo';
 
 export default class DropLocationPickScreen extends React.Component {
   static route = {
@@ -20,14 +22,60 @@ export default class DropLocationPickScreen extends React.Component {
     },
   };
 
+  state = {
+      location: null,
+      errorMessage: null
+  }
+
+  componentWillMount() {
+    // const locData = getLocationAsync()
+    // if (locData.success) {
+    //     this.setState({
+    //         location: locData.location
+    //     })
+    // }
+    this._getLocationAsync()
+  }
+
+  renderMap() {
+      if (this.state.location != null) {
+          console.log('in here')
+          console.log(this.state.location.coords.latitude)
+          console.log(this.state.location.coords.longitude)
+         return (
+         <MapView
+        style={{ flex: 1 }}
+        initialRegion={{
+          latitude: this.state.location.coords.latitude,
+          longitude: this.state.location.coords.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        >
+            <MapView.Marker
+      coordinate={{
+          latitude: this.state.location.coords.latitude,
+          longitude: this.state.location.coords.longitude,
+      }}
+      title={'title'}
+      description={'description'}
+    />
+    </MapView>
+    )
+      } else {
+          console.log('but here')
+          return null
+      }
+  }
+
   render() {
     const { dropInfo } = this.props.route.params
+    console.log(this.state.location)
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
-
+          <View style={{ height: 400 }}>
+            { this.renderMap()}
+        </View>
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>
                 { dropInfo.content }
@@ -45,10 +93,21 @@ export default class DropLocationPickScreen extends React.Component {
                 )}
             />
           </View>
-       </ScrollView>
       </View>
     );
   }
+
+      _getLocationAsync = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({ location });
+  };
 
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
