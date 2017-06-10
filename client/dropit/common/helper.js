@@ -6,8 +6,10 @@ function stringifyParams(params) {
     if (keys.length == 0) {
         return ""
     }
+
     const q = keys.reduce((acc, key) => {
         acc += `&${key}=${params[key]}`
+        return acc
     }, "")
 
     return q.substring(1)
@@ -28,6 +30,8 @@ export function getRequest(urlPath, params={}) {
 }
 
 export function postRequest(urlPath, data) {
+    console.log(data)
+    console.log(urlPath)
     return new Promise((resolve, reject) => {
         fetch(`${BASE_API_URL}/${urlPath}`, { 
             method: 'POST',
@@ -39,6 +43,9 @@ export function postRequest(urlPath, data) {
         })
             .then(res => {
                 resolve(res.json())
+            })
+            .catch(r => {
+                console.log(r.message)
             })
     })
 }
@@ -57,4 +64,4 @@ export function postRequest(urlPath, data) {
         success: true,
         location: location
     }
-};
+}

@@ -9,23 +9,28 @@ import {
   TouchableOpacity,
   View,
   Button,
+  TouchableHighlight,
+  ImageEditor,
+  ImageStore
 } from 'react-native';
 
 import { ImagePicker, Permissions } from 'expo'
+import { Constants, Svg } from 'expo';
 
-import { MonoText } from '../components/StyledText';
+import { sharedStyles } from '../common/const'
 
 export default class DropContentPickScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      visible: false,
-    },
-  };
+    static route = {
+        navigationBar: {
+        visible: false,
+        },
+    }
 
     constructor(props) {
       super(props)
       this.state = {
-          image: null
+          image: null,
+          data: ""
       }
   }
 
@@ -33,36 +38,119 @@ export default class DropContentPickScreen extends React.Component {
       let { image } = this.state
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
-
-           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Button
-                    title="Pick an image from camera roll"
-                    onPress={this._pickImage}
-                />
-        {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            </View>
-
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>
-                "Content Stuff"
-            </Text>
-            <Button 
-                title="Pick Image"
-                onPress={() => this.props.navigator.push(
-                    'dropLocationPick',
-                    {
-                        dropInfo: {
-                            content: 'Yo me'
-                        }
+        <View style={{ width:'100%', height: 45, flexDirection:'row', justifyContent:'flex-start', paddingLeft:10, marginTop:10 }}>
+          <Button
+            color='#C42E34'
+            title="< Back"
+            onPress={() => this.props.navigator.push(
+                'dropLocationPick',
+                {
+                    dropInfo: {
+                        content: 'Yo me'
                     }
-                )}
-            />
+                }
+            )}
+          />
+        </View>
+
+        <View style={{ flexDirection:'column', justifyContent:'center',alignItems:'center' }}>
+          { !image &&
+          <View style={{ flexDirection:'column', justifyContent:'center',alignItems:'center' }}>
+            <View style={{ height: 85, width: 85 }}>
+            <TouchableHighlight 
+              onPress={this._pickImage}
+              underlayColor='#F7F7F7'
+              >
+              {/*<Svg height={85} width={85}>
+                <Svg.Circle
+                  cx={42.5}
+                  cy={42.5}
+                  r={40}
+                  strokeWidth={1.5}
+                  stroke="#9B9B9B"
+                  fill="#white"
+                />
+                <Svg.Rect
+                  x={35}
+                  y={12.5}
+                  width={15}
+                  height={60}
+                  strokeWidth={0}
+                  stroke="rgba (0,0,0,0)"
+                  fill="#9B9B9B"
+                />
+                <Svg.Rect
+                  x={12.5}
+                  y={35}
+                  width={60}
+                  height={15}
+                  strokeWidth={0}
+                  stroke="rgba (0,0,0,0)"
+                  fill="#9B9B9B"
+                />
+              </Svg>*/}
+              <Image
+                style={styles.AddImageButton}
+                source={require('./AddImageButton.png')}
+              />
+            </TouchableHighlight>
+            </View>
+            <View style={{marginTop: 5 }}>
+              <Text style={sharedStyles.fontGrey}>
+                  "Add Image to drop"
+              </Text>
+            </View> 
+          </View> }
+
+          {image &&
+          <View>
+            <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
+            <View style={{ width:300, flexDirection:'row', justifyContent:'flex-start', marginLeft:-10 }}>
+              {/*<FontAwesome
+                name={name}
+                size={32}
+                color={isSelected ? Colors.tabIconSelected : Colors.tabIconDefault}
+              />*/}
+              <Button
+              color='#4990E2'
+              title="Change image"
+              onPress={this._pickImage}
+              />
+            </View>
           </View>
-       </ScrollView>
+          }
+        </View>
+
+        {/*<View>
+          <Button
+              color='#9B9B9B'
+              title="Add Image to drop"
+              onPress={this._pickImage}
+          />
+          {image &&
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+        </View>*/}
+
+        {/*<View>
+          <Text>
+              "Content Stuff"
+          </Text>
+        </View>*/}
+
+        <View style={{marginBottom: 45}}>
+          <Button
+            color='#C42E34'
+            title="Continue >"
+            onPress={() => this.props.navigator.push(
+                'dropLocationPick',
+                {
+                    dropInfo: {
+                        content: 'Yo me'
+                    }
+                }
+            )}
+          />
+        </View>
       </View>
     );
   }
@@ -72,17 +160,23 @@ export default class DropContentPickScreen extends React.Component {
   if (status !== 'granted') {
     throw new Error('Location permission not granted');
   } else {
-
-
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3],
     });
 
-    console.log(result);
+    console.log(result)
+    const cropData = {
+        size: { width: result.width, height: result.height }
+    }
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
+        ImageEditor.cropImage(result.uri, cropData, (imageURI) => {
+            ImageStore.getBase64ForTag(imageURI, (base64Data) => {
+                // base64Data contains the base64string of the image
+                this.setState({ image: result.uri, data: base64Data, res: result })
+            }, (reason) => console.error(reason));
+        }, (reason) => console.error(reason));
     }
   }
   };
@@ -115,86 +209,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 15,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 80,
-  },
-  welcomeContainer: {
+    flexDirection: 'column',
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    justifyContent: 'space-between'
   },
-  welcomeImage: {
-    width: 140,
-    height: 38,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 23,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
+
+  AddImageButton: {
+    width: 85,
   },
 });

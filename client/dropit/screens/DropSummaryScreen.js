@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Image,
   Linking,
@@ -6,75 +6,120 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   Button,
-} from 'react-native';
-
-import { MonoText } from '../components/StyledText';
+} from 'react-native'
+import { postRequest } from '../common/helper'
 
 export default class DropSummaryScreen extends React.Component {
-  static route = {
-    navigationBar: {
-      visible: true,
-    },
-  };
+    static route = {
+        navigationBar: {
+        visible: true,
+        },
+    };
 
-  render() {
-    const { dropInfo } = this.props.route.params
-    return (
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
-
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>
-                {`Content: ${dropInfo.content}\n`}
-                {`Location: ${dropInfo.location}\n`}
-                {`Time: ${dropInfo.time}\n`}
-            </Text>
-            <Button 
-                title="DROP!!!"
-                onPress={() => this.props.navigator.push(
-                    'dropSuccess',
-                    {
-                        status: 'SUCCESS!!!'
-                    }
-                )}
-            />
-          </View>
-       </ScrollView>
-      </View>
-    );
-  }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will run slightly slower but
-          you have access to useful development tools. {learnMoreButton}.
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
+    state = {
+        errorMessage: ""
     }
-  }
 
-  _handlePress = () => {
-      this.props.navigator.push('contentPick', {name: 'Hello People'})
-  }
+    _drop(userId, lat, lng, base64img, name, amount) {
+        postRequest('users/', {
+            userId: 'u123111'
+        })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(r => {
+                console.log(r)
+            })
+    }
+
+    drop(userId, name, amount, base64img, lat, lng, fromDate, toDate) {
+        postRequest('drops.json/', {
+            userId: userId,
+            lat: lat,
+            lng: lng,
+            image: base64img,
+            name: name,
+            total_amount: amount,
+            from_date: fromDate.getTime()/1000,
+            to_date: toDate.getTime()/1000
+        })
+            .then(res => {
+                console.log(res)
+                this.props.navigator.push(
+                    'dropSuccess', {
+                        status: 'success'
+                    }
+                )
+            })
+            .catch(r => {
+                console.log(r)
+                this.setState({
+                errorMessage: r
+            })})
+    }
+
+    render() {
+        const { dropInfo } = this.props.route.params
+        console.log(dropInfo)
+        return (
+            <View style={styles.container}>
+                <ScrollView
+                    style={styles.container}
+                    contentContainerStyle={styles.contentContainer}>
+
+                    <View style={styles.getStartedContainer}>
+                        <Text style={styles.getStartedText}>
+                            {`Content: ${dropInfo.content.data}\n`}
+                            {`Location: lat-${dropInfo.location.coords.latitude}\n`}
+                            {`Location: lng-${dropInfo.location.coords.longitude}\n`}
+                            {`Time: ${dropInfo.time.from} - ${dropInfo.time.to}\n`}
+                        </Text>
+                        <Text style={styles.getStartedText}>
+                            {`error: ${this.state.errorMessage}\n`}
+                        </Text>
+                        <Button 
+                            title="DROP!!!"
+                            onPress={() => this.drop(
+                                'u1',
+                                'Test Drop',
+                                20,
+                                dropInfo.content.data,
+                                dropInfo.location.coords.latitude,
+                                dropInfo.location.coords.longitude,
+                                dropInfo.time.from,
+                                dropInfo.time.to,
+                            )}
+                        />
+                    </View>
+                </ScrollView>
+            </View>
+        )
+    }
+
+    _maybeRenderDevelopmentModeWarning() {
+        if (__DEV__) {
+        const learnMoreButton = (
+            <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
+            Learn more
+            </Text>
+        );
+
+        return (
+            <Text style={styles.developmentModeText}>
+            Development mode is enabled, your app will run slightly slower but
+            you have access to useful development tools. {learnMoreButton}.
+            </Text>
+        );
+        } else {
+        return (
+            <Text style={styles.developmentModeText}>
+            You are not in development mode, your app will run at full speed.
+            </Text>
+        );
+        }
+    }
 }
 
 const styles = StyleSheet.create({
@@ -91,32 +136,9 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 80,
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 140,
-    height: 38,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
   getStartedContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
   },
   getStartedText: {
     fontSize: 17,

@@ -21,6 +21,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
+      
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
@@ -54,12 +55,6 @@ export default class HomeScreen extends React.Component {
                 "HELLO WORLD"
             </Text>
           </View>
-
-        <View>
-          <Text onPress={this._handlePress}>
-            Hello World
-            </Text>
-        </View>
 
           <View style={styles.helpContainer}>
             <TouchableOpacity
