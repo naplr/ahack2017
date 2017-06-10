@@ -36,7 +36,9 @@ export default class DropContentPickScreen extends React.Component {
                 onPress={() => this.props.navigator.push(
                     'dropLocationPick',
                     {
-                        content: 'Yo  me'
+                        dropInfo: {
+                            content: 'Yo me'
+                        }
                     }
                 )}
             />

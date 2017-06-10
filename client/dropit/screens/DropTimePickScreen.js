@@ -21,6 +21,7 @@ export default class DropTimePickScreen extends React.Component {
   };
 
   render() {
+    const { dropInfo } = this.props.route.params
     return (
       <View style={styles.container}>
         <ScrollView
@@ -29,14 +30,17 @@ export default class DropTimePickScreen extends React.Component {
 
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>
-                { this.props.route.params.location}
+                { dropInfo.location}
             </Text>
             <Button 
                 title="Pick Time"
                 onPress={() => this.props.navigator.push(
                     'dropSummary',
                     {
-                        time: 'my time'
+                        dropInfo: Object.assign(
+                            dropInfo, 
+                            { time: 'my time' }
+                        )
                     }
                 )}
             />

@@ -21,6 +21,7 @@ export default class DropSummaryScreen extends React.Component {
   };
 
   render() {
+    const { dropInfo } = this.props.route.params
     return (
       <View style={styles.container}>
         <ScrollView
@@ -29,7 +30,9 @@ export default class DropSummaryScreen extends React.Component {
 
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>
-                { this.props.route.params.time}
+                {`Content: ${dropInfo.content}\n`}
+                {`Location: ${dropInfo.location}\n`}
+                {`Time: ${dropInfo.time}\n`}
             </Text>
             <Button 
                 title="DROP!!!"
