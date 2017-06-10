@@ -37,7 +37,7 @@ export default class DropSummaryScreen extends React.Component {
     }
 
     drop(userId, name, amount, base64img, lat, lng, fromDate, toDate) {
-        postRequest('drops.json/', {
+        postRequest('drops/', {
             userId: userId,
             lat: lat,
             lng: lng,
@@ -48,7 +48,6 @@ export default class DropSummaryScreen extends React.Component {
             to_date: toDate.getTime()/1000
         })
             .then(res => {
-                console.log(res)
                 this.props.navigator.push(
                     'dropSuccess', {
                         status: 'success'
@@ -74,7 +73,9 @@ export default class DropSummaryScreen extends React.Component {
                 </View>
 
                 <View style={{width: 335, flexDirection:'row',justifyContent:'flex-start', marginTop:20, backgroundColor:'#ffffff' }}>
-                    <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
+                    { dropInfo.content.image != "" && dropInfo.content.image != null
+                            ?   <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
+                            : null }
                 </View>
 
                 <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
@@ -111,20 +112,21 @@ export default class DropSummaryScreen extends React.Component {
                         </View>
                     </View> 
                 </View>
+
                 <View style={{marginTop:'auto', marginBottom: 35}}>
                     <Button
                         color='#C42E34'
                         title="DROP IT! >"
                         onPress={() => this.drop(
                                 'u1',
-                                'Test Drop',
-                                20,
+                                dropInfo.name,
+                                dropInfo.amount,
                                 dropInfo.content.data,
                                 dropInfo.location.coords.latitude,
                                 dropInfo.location.coords.longitude,
                                 dropInfo.time.from,
                                 dropInfo.time.to,
-                            )}
+                        )}
                     />
                 </View>
             </View>

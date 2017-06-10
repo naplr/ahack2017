@@ -7,12 +7,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   View,
   Button,
 } from 'react-native';
 
 import { MapView, Constants, Location, Permissions } from 'expo';
 import { getRequest, postRequest } from '../common/helper'
+import { sharedStyles } from '../common/const'
 
 export default class ViewDropScreen extends React.Component {
     static route = {
@@ -24,33 +26,55 @@ export default class ViewDropScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            dropInfo: null
-            // dropInfo: {
-            //     id: "ef075cd2-90c9-4e3c-b395-b5c510971d56",
-            //     name: "Corgi Dog",
-            //     creator: "John Marshall",
-            //     image: "https://facebook.github.io/react/img/logo_og.png"
-            // },
+            status: "Loading...",
+            dropInfo: {
+                id: "",
+                name: "",
+                creator: "",
+                image: ""
+            },
         }
+
+        this.keepDrop = this.keepDrop.bind(this)
     }
 
     componentWillMount() {
         const { dropId } = this.props.route.params
+        this.setState({
+            status: "Waiting " + dropId
+        })
+
         getRequest(`drops/${dropId}`)
             .then(res => {
                 this.setState({
+                    // status: "Received " + dropId
+                    status: JSON.stringify(res)
+                })
+
+                const dif = {
                     id: res.id,
                     name: res.name,
                     creator: res.creator,
                     image: res.image,
+                    ok: 'kjkj'
+                }
+
+                this.setState({
+                    dropInfo: dif,
+                    status: dif
                 })
             })
             .catch(r => {
                 console.log(r.message)
+                this.setState({status: ';lkadfsjl;kjflkjafslkafd;kl'})
             })
     }
 
     keepDrop() {
+        this.setState({
+            status: JSON.stringify(this.state.dropInfo)
+        }) 
+
         postRequest('collected-drop', {
             userId: 'u2',
             dropId: this.state.dropInfo.id
@@ -59,22 +83,23 @@ export default class ViewDropScreen extends React.Component {
                 if (res.success) {
                     this.props.navigator.push(
                         'keepDropSuccess', {
-                            name: this.state.name
+                            name: this.state.dropInfo.name
                     })
                 }
             })
     }
 
     render() {
-        if (this.state.dropInfo == null) {
+        /*if (this.state.dropInfo == null) {
             return (
-                <View>
+                <View style={styles.container}>
                     <Text>
-                        Loading...
+                        { this.state.status }
                     </Text>
                 </View>
             )
-        }
+        }*/
+
         return (
         <View style={sharedStyles.container}>
             <Text style={styles.getStartedText}>
@@ -84,26 +109,13 @@ export default class ViewDropScreen extends React.Component {
                 { this.state.dropInfo.name }
             </Text>
 
-            <Text style={styles.getStartedText}>
-                { `Content: ${this.state.dropId}\n` }
-                { `Location: ${JSON.stringify(this.state.location)}` }
-            </Text>
-                { this.state.content != ""
+                { this.state.dropInfo.image != "" && this.state.dropInfo.image != null
                     ? <Image source={{ uri: this.state.dropInfo.image }} style={{ width: 200, height: 200 }} />
                     : null }
+
             <Text style={styles.getStartedText}>
                 { `drop by: ${this.state.dropInfo.creator}` }
             </Text>
-            {/*<Button 
-                title="Discard"
-                onPress={() => this.props.navigator.push(
-                    'exploreHomeScreen'
-                )}
-            />*/}
-            {/*<Button 
-                title="Keep"
-                onPress={ this.keepDrop }
-            />*/}
             <View style={{flexDirection:'row', justifyContent:'space-around'}}>
               <View style={{flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
                 <TouchableHighlight 
