@@ -11,6 +11,8 @@ import {
 } from 'react-native'
 import { postRequest } from '../common/helper'
 
+import { sharedStyles } from '../common/const'
+
 export default class DropSummaryScreen extends React.Component {
     static route = {
         navigationBar: {
@@ -64,21 +66,44 @@ export default class DropSummaryScreen extends React.Component {
         const { dropInfo } = this.props.route.params
         console.log(dropInfo)
         return (
-            <View style={styles.container}>
-                <ScrollView
-                    style={styles.container}
-                    contentContainerStyle={styles.contentContainer}>
+            <View style={sharedStyles.container}>
+                    <View style={sharedStyles.title}>
+                        <Text style={sharedStyles.fontMainBig}>
+                            Summary
+                        </Text>
+                    </View>
+                    <View>
+                        <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
+                            <Text style={sharedStyles.fontMain}>
+                                {`Content: ${dropInfo.content.data}\n`}
+                            </Text>
+                            <View style={{ width:335, flex:1, flexDirection:'row', justifyContent:'space-between' }}>
+                                <Text style={sharedStyles.fontMain}>
+                                    Location:
+                                </Text>
+                                <Text style={sharedStyles.fontMain}>
+                                    {`${dropInfo.location.coords.latitude}\n`}
+                                </Text>
+                            </View>
+                            <View style={{ width:335, flex:1, flexDirection:'row', justifyContent:'flex-end' }}> 
+                                <Text style={sharedStyles.fontMain}>
+                                    {`${dropInfo.location.coords.longitude}\n`}
+                                </Text>
+                            </View>
 
-                    <View style={styles.getStartedContainer}>
-                        <Text style={styles.getStartedText}>
-                            {`Content: ${dropInfo.content.data}\n`}
-                            {`Location: lat-${dropInfo.location.coords.latitude}\n`}
-                            {`Location: lng-${dropInfo.location.coords.longitude}\n`}
-                            {`Time: ${dropInfo.time.from} - ${dropInfo.time.to}\n`}
-                        </Text>
-                        <Text style={styles.getStartedText}>
-                            {`error: ${this.state.errorMessage}\n`}
-                        </Text>
+                            <View style={{ width:335, flex:1, flexDirection:'row', justifyContent:'space-between' }}>
+                                <Text style={sharedStyles.fontMain}>
+                                    Time:
+                                </Text>   
+                                <Text style={sharedStyles.fontMain}>
+                                    {`${dropInfo.time.from} - ${dropInfo.time.to}\n`}
+                                </Text>
+                            </View>
+
+                            {/*<Text style={styles.getStartedText}>
+                                {`error: ${this.state.errorMessage}\n`}
+                            </Text>*/}
+                        </View>
                         <Button 
                             title="DROP!!!"
                             onPress={() => this.drop(
@@ -93,7 +118,7 @@ export default class DropSummaryScreen extends React.Component {
                             )}
                         />
                     </View>
-                </ScrollView>
+
             </View>
         )
     }
@@ -123,66 +148,66 @@ export default class DropSummaryScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 15,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 80,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 23,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//   },
+//   developmentModeText: {
+//     marginBottom: 20,
+//     color: 'rgba(0,0,0,0.4)',
+//     fontSize: 15,
+//     textAlign: 'center',
+//   },
+//   contentContainer: {
+//     paddingTop: 80,
+//   },
+//   getStartedContainer: {
+//     alignItems: 'center',
+//     marginHorizontal: 50,
+//   },
+//   getStartedText: {
+//     fontSize: 17,
+//     color: 'rgba(96,100,109, 1)',
+//     lineHeight: 23,
+//     textAlign: 'center',
+//   },
+//   tabBarInfoContainer: {
+//     position: 'absolute',
+//     bottom: 0,
+//     left: 0,
+//     right: 0,
+//     ...Platform.select({
+//       ios: {
+//         shadowColor: 'black',
+//         shadowOffset: { height: -3 },
+//         shadowOpacity: 0.1,
+//         shadowRadius: 3,
+//       },
+//       android: {
+//         elevation: 20,
+//       },
+//     }),
+//     alignItems: 'center',
+//     backgroundColor: '#fbfbfb',
+//     paddingVertical: 20,
+//   },
+//   tabBarInfoText: {
+//     fontSize: 17,
+//     color: 'rgba(96,100,109, 1)',
+//     textAlign: 'center',
+//   },
+//   navigationFilename: {
+//     marginTop: 5,
+//   },
+//   helpContainer: {
+//     marginTop: 15,
+//     alignItems: 'center',
+//   },
+//   helpLink: {
+//     paddingVertical: 15,
+//   },
+//   helpLinkText: {
+//     fontSize: 14,
+//     color: '#2e78b7',
+//   },
 });

@@ -54,7 +54,7 @@ export default class DropContentPickScreen extends React.Component {
         </View>*/}
 
         {image &&
-            <View style={sharedStyles.fontMainBig}>
+            <View style={{flexDirection:'row', justifyContent:'center', marginTop:84, marginBottom:10}}>
               <Text style={sharedStyles.fontMainBig}>
                 You've Selected
               </Text>
@@ -64,7 +64,7 @@ export default class DropContentPickScreen extends React.Component {
         <View style={{ flex:1, flexDirection:'column', justifyContent:'center',alignItems:'center' }}>
           { !image &&
           <View style={{ flex:1, flexDirection:'column', justifyContent:'center',alignItems:'center' }}>
-            <View style={{ height: 85, width: 85, marginTop:10 }}>
+            <View style={{ height: 85, width: 85, marginTop:15 }}>
               <TouchableHighlight 
                 onPress={this._pickImage}
                 underlayColor='#F7F7F7'

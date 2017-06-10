@@ -74,7 +74,7 @@ export default class DropLocationPickScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                <View style={sharedStyles.title}>
+                <View style={sharedStyles.title} >
                     <Text style={sharedStyles.fontMainBig}>
                         Select Location
                     </Text>
