@@ -5,6 +5,7 @@ from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseNotAll
 from .models import *
 import json
 from django.views.decorators.csrf import csrf_exempt
+import gpxpy.geo
 
 
 # Create your views here.
@@ -15,6 +16,7 @@ class ApiUserViewSet(viewsets.ModelViewSet):
 
 class DropViewSet(viewsets.ModelViewSet):
     queryset = Drop.objects.all()
+
     # serializer_class = DropSerializer
 
     def get_serializer_class(self):
@@ -45,8 +47,8 @@ def explore(request):
         except ApiUser.DoesNotExist:
             return HttpResponseBadRequest('user with that ID not found')
 
-        nearby = Drop.objects.filter().exclude(creator=user,receiver=user)
-        return JsonResponse([n['id'] for n in nearby], safe=False)
+        nearby = Drop.objects.filter(total_amount__gt=0, lat__lt=float(lat) + 0.1, lat__gt=float(lat) - 0.1, lng__lt=float(lng) + 0.1, lng__gt=float(lng) - 0.1).exclude(creator=user).exclude(receiver=user)  # exclude drops create and receive by this
+        return JsonResponse([n.name for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
     else:
         return HttpResponseNotAllowed('use GET only')
 
@@ -73,8 +75,11 @@ def collect_drop(request):
             return HttpResponseBadRequest('drop with that ID not found')
         if drop.total_amount <= 0:
             return JsonResponse({"status": 'drop count depleted'})
+        # TODO maybe check specific user haven't got this drop already
         user.drop_received.add(drop)
         user.save()
+        drop.total_amount = drop.total_amount - 1
+        drop.save()
         return JsonResponse({"status": 'successful'})
     else:
         return HttpResponseNotAllowed('use POST only')
