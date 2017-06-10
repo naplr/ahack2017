@@ -7,13 +7,13 @@
   "version": "1.0.0",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
-  "icon": "./assets/icons/app-icon.png",
+  "icon": "./assets/icons/DropitIconMain.png",
   "notification": {
-    "icon": "./assets/icons/notification-icon.png",
-    "color": "#000000"
+    "icon": "./assets/icons/DropitIconMain.png",
+    "color": "#C42E34"
   },
   "loading": {
-    "icon": "./assets/icons/loading-icon.png",
+    "icon": "./assets/icons/DropitIconMain.png",
     "hideExponentText": false
   },
   "packagerOpts": {
