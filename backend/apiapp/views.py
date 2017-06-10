@@ -98,7 +98,7 @@ def collect_drop(request):
         UserDrop.objects.create(user=user, drop=drop)
         drop.total_amount = drop.total_amount - 1
         drop.save()
-        return JsonResponse({"status": 'successful'})
+        return JsonResponse({"success": True},)
     else:
         return HttpResponseNotAllowed('use POST only')
 
