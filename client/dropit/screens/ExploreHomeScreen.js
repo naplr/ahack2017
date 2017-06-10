@@ -48,7 +48,7 @@ export default class DropContentPickScreen extends React.Component {
                 "Explore!!"
             </Text>
             <Text style={styles.getStartedText}>
-                { `Content: ${this.state.content}\n` }
+                { `Content: ${this.state.dropId}\n` }
                 { `Location: ${JSON.stringify(this.state.location)}` }
             </Text>
                 { this.state.dropId != ""
