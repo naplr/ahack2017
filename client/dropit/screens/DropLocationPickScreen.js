@@ -73,7 +73,7 @@ export default class DropLocationPickScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={{ height: 400 }}>
-                    { this.renderMap()}
+                    { this.renderMap() }
                 </View>
                 <View style={styles.getStartedContainer}>
                     <Text style={styles.getStartedText}>

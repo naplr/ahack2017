@@ -34,16 +34,19 @@ export default class DropSummaryScreen extends React.Component {
             })
     }
 
-    drop(userId, lat, lng, base64img, name, amount) {
-        postRequest('drops/', {
+    drop(userId, name, amount, base64img, lat, lng, fromDate, toDate) {
+        postRequest('drops.json/', {
             userId: userId,
             lat: lat,
             lng: lng,
             image: base64img,
             name: name,
-            total_amount: amount
+            total_amount: amount,
+            from_date: fromDate.getTime()/1000,
+            to_date: toDate.getTime()/1000
         })
             .then(res => {
+                console.log(res)
                 this.props.navigator.push(
                     'dropSuccess', {
                         status: 'success'
@@ -59,6 +62,7 @@ export default class DropSummaryScreen extends React.Component {
 
     render() {
         const { dropInfo } = this.props.route.params
+        console.log(dropInfo)
         return (
             <View style={styles.container}>
                 <ScrollView
@@ -79,11 +83,13 @@ export default class DropSummaryScreen extends React.Component {
                             title="DROP!!!"
                             onPress={() => this.drop(
                                 'u1',
+                                'Test Drop',
+                                20,
+                                dropInfo.content.data,
                                 dropInfo.location.coords.latitude,
                                 dropInfo.location.coords.longitude,
-                                dropInfo.content.data,
-                                'Test Drop',
-                                20
+                                dropInfo.time.from,
+                                dropInfo.time.to,
                             )}
                         />
                     </View>

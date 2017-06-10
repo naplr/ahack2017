@@ -165,13 +165,16 @@ export default class DropContentPickScreen extends React.Component {
       aspect: [4, 3],
     });
 
-    console.log(result);
+    console.log(result)
+    const cropData = {
+        size: { width: result.width, height: result.height }
+    }
 
     if (!result.cancelled) {
-        ImageEditor.cropImage(result.uri, null, (imageURI) => {
+        ImageEditor.cropImage(result.uri, cropData, (imageURI) => {
             ImageStore.getBase64ForTag(imageURI, (base64Data) => {
                 // base64Data contains the base64string of the image
-                this.setState({ image: result.uri, data: base64Data})
+                this.setState({ image: result.uri, data: base64Data, res: result })
             }, (reason) => console.error(reason));
         }, (reason) => console.error(reason));
     }

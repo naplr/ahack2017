@@ -6,8 +6,10 @@ function stringifyParams(params) {
     if (keys.length == 0) {
         return ""
     }
+
     const q = keys.reduce((acc, key) => {
         acc += `&${key}=${params[key]}`
+        return acc
     }, "")
 
     return q.substring(1)

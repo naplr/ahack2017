@@ -33,17 +33,33 @@ export default class DropContentPickScreen extends React.Component {
   }
 
   componentWillMount() {
-    getRequest('users.json')
-    // postRequest('posts', {userID: 9999, title: ''})
-        .then(res => {
-            this.setState({
-                // content: `ID:${res.userId} -- title: ${res.title}`
-                content: JSON.stringify(res)
-            })
-        })
+    // getRequest('users.json')
+    // // postRequest('posts', {userID: 9999, title: ''})
+    //     .then(res => {
+    //         this.setState({
+    //             // content: `ID:${res.userId} -- title: ${res.title}`
+    //             content: JSON.stringify(res)
+    //         })
+    //     })
 
     this._getLocationAsync()
   }
+
+//   componentDidMount() {
+//     const params = {
+//         userId: 'u2',
+//         lat: this.state.location.coords.latitude,
+//         lng: this.state.location.coords.longitude
+//     }
+
+//     getRequest('explore', params)
+//         .then(res => {
+//             this.setState({
+//                 // content: `ID:${res.userId} -- title: ${res.title}`
+//                 content: JSON.stringify(res)
+//             })
+//         })
+//   }
 
   render() {
     return (
@@ -60,6 +76,13 @@ export default class DropContentPickScreen extends React.Component {
                 { `Content: ${this.state.content}\n` }
                 { `Location: ${JSON.stringify(this.state.location)}` }
             </Text>
+                { this.state.content != ""
+                    ? (<View>
+                            <Text>Hello World</Text>
+                            <Image source={{ uri: this.state.content }} style={{ width: 200, height: 200 }} />
+                            {/*<Image source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}} style={{ width: 200, height: 200 }} />*/}
+                        </View> )
+                    : null }
             <Button 
                 title="Explore"
                 onPress={() => this.props.navigator.push(
@@ -87,6 +110,32 @@ export default class DropContentPickScreen extends React.Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location });
+
+    const params = {
+        userId: 'u2',
+        lat: location.coords.latitude,
+        lng: location.coords.longitude
+    }
+
+    console.log(params)
+
+    getRequest('explore', params)
+        .then(res => {
+            console.log(res)
+            const dropId = res
+            return getRequest(`drops/${dropId}`)
+        })
+        .then(res => {
+            console.log(res)
+            this.setState({
+                // content: `ID:${res.userId} -- title: ${res.title}`
+                // content: JSON.stringify(res)
+                content: res.image
+            })
+        })
+        .catch(r => {
+            console.log(r.message)
+        })
   };
 
   _maybeRenderDevelopmentModeWarning() {
