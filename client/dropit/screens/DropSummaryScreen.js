@@ -18,8 +18,24 @@ export default class DropSummaryScreen extends React.Component {
         },
     };
 
+    state = {
+        errorMessage: ""
+    }
+
+    _drop(userId, lat, lng, base64img, name, amount) {
+        postRequest('users/', {
+            userId: 'u123111'
+        })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(r => {
+                console.log(r)
+            })
+    }
+
     drop(userId, lat, lng, base64img, name, amount) {
-        postRequest('drops', {
+        postRequest('drops/', {
             userId: userId,
             lat: lat,
             lng: lng,
@@ -34,6 +50,11 @@ export default class DropSummaryScreen extends React.Component {
                     }
                 )
             })
+            .catch(r => {
+                console.log(r)
+                this.setState({
+                errorMessage: r
+            })})
     }
 
     render() {
@@ -50,6 +71,9 @@ export default class DropSummaryScreen extends React.Component {
                             {`Location: lat-${dropInfo.location.coords.latitude}\n`}
                             {`Location: lng-${dropInfo.location.coords.longitude}\n`}
                             {`Time: ${dropInfo.time.from} - ${dropInfo.time.to}\n`}
+                        </Text>
+                        <Text style={styles.getStartedText}>
+                            {`error: ${this.state.errorMessage}\n`}
                         </Text>
                         <Button 
                             title="DROP!!!"

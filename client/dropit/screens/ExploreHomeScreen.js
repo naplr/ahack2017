@@ -33,11 +33,12 @@ export default class DropContentPickScreen extends React.Component {
   }
 
   componentWillMount() {
-    getRequest('posts/1')
+    getRequest('users.json')
     // postRequest('posts', {userID: 9999, title: ''})
         .then(res => {
             this.setState({
-                content: `ID:${res.userId} -- title: ${res.title}`
+                // content: `ID:${res.userId} -- title: ${res.title}`
+                content: JSON.stringify(res)
             })
         })
 
