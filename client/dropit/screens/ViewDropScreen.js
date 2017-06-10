@@ -75,7 +75,7 @@ export default class ViewDropScreen extends React.Component {
             </Text>
 
             <Text style={styles.getStartedText}>
-                { `Content: ${this.state.content}\n` }
+                { `Content: ${this.state.dropId}\n` }
                 { `Location: ${JSON.stringify(this.state.location)}` }
             </Text>
                 { this.state.content != ""
@@ -87,7 +87,7 @@ export default class ViewDropScreen extends React.Component {
             <Button 
                 title="Discard"
                 onPress={() => this.props.navigator.push(
-                    'home'
+                    'exploreHomeScreen'
                 )}
             />
             <Button 
