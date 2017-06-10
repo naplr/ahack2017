@@ -30,9 +30,10 @@ export default class DropSummaryScreen extends React.Component {
 
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>
-                {`Content: ${dropInfo.content}\n`}
-                {`Location: ${dropInfo.location}\n`}
-                {`Time: ${dropInfo.time}\n`}
+                {`Content: ${dropInfo.content.data}\n`}
+                {`Location: lat-${dropInfo.location.coords.latitude}\n`}
+                {`Location: lng-${dropInfo.location.coords.longitude}\n`}
+                {`Time: ${dropInfo.time.from} - ${dropInfo.time.to}\n`}
             </Text>
             <Button 
                 title="DROP!!!"

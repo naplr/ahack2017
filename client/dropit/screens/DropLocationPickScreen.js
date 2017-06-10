@@ -78,7 +78,7 @@ export default class DropLocationPickScreen extends React.Component {
         </View>
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>
-                { dropInfo.content }
+                "It's ok'"
             </Text>
             <Button 
                 title="Pick Location"
@@ -87,7 +87,7 @@ export default class DropLocationPickScreen extends React.Component {
                     {
                         dropInfo: Object.assign(
                             dropInfo, 
-                            { location: 'my location' }
+                            { location: this.state.location }
                         )
                     }
                 )}
