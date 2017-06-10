@@ -7,12 +7,14 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   View,
   Button,
 } from 'react-native';
 
 import { MapView, Constants, Location, Permissions } from 'expo';
 import { getRequest, postRequest } from '../common/helper'
+import { sharedStyles } from '../common/const'
 
 export default class ViewDropScreen extends React.Component {
     static route = {
@@ -24,14 +26,13 @@ export default class ViewDropScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            dropInfo: null,
-            status: "Loading..."
-            // dropInfo: {
-            //     id: "ef075cd2-90c9-4e3c-b395-b5c510971d56",
-            //     name: "Corgi Dog",
-            //     creator: "John Marshall",
-            //     image: "https://facebook.github.io/react/img/logo_og.png"
-            // },
+            status: "Loading...",
+            dropInfo: {
+                id: "",
+                name: "",
+                creator: "",
+                image: ""
+            },
         }
 
         this.keepDrop = this.keepDrop.bind(this)
@@ -46,20 +47,26 @@ export default class ViewDropScreen extends React.Component {
         getRequest(`drops/${dropId}`)
             .then(res => {
                 this.setState({
-                    status: "Received " + dropId
+                    // status: "Received " + dropId
+                    status: JSON.stringify(res)
                 })
 
+                const dif = {
+                    id: res.id,
+                    name: res.name,
+                    creator: res.creator,
+                    image: res.image,
+                    ok: 'kjkj'
+                }
+
                 this.setState({
-                    dropInfo: {
-                        id: res.id,
-                        name: res.name,
-                        creator: res.creator,
-                        image: res.image,
-                    }
+                    dropInfo: dif,
+                    status: dif
                 })
             })
             .catch(r => {
                 console.log(r.message)
+                this.setState({status: ';lkadfsjl;kjflkjafslkafd;kl'})
             })
     }
 
@@ -83,7 +90,7 @@ export default class ViewDropScreen extends React.Component {
     }
 
     render() {
-        if (this.state.dropInfo == null) {
+        /*if (this.state.dropInfo == null) {
             return (
                 <View style={styles.container}>
                     <Text>
@@ -91,7 +98,8 @@ export default class ViewDropScreen extends React.Component {
                     </Text>
                 </View>
             )
-        }
+        }*/
+
         return (
         <View style={sharedStyles.container}>
             <Text style={styles.getStartedText}>
