@@ -24,10 +24,18 @@ export default class RootNavigation extends React.Component {
 
   render() {
     return (
-      <TabNavigation tabBarHeight={56} initialTab="home">
+      <TabNavigation tabBarHeight={56} initialTab="home" navigatorUID="main">
         <TabNavigationItem
           id="home"
-          renderIcon={isSelected => this._renderIcon('home', isSelected)}>
+          renderIcon={isSelected => this._renderIcon('home', isSelected)}
+          onPress={ (tabItemOnPress, event) => {
+              tabItemOnPress()
+              this.props.navigation.performAction(({tabs, stacks}) => {
+                  const { currentNavigatorUID } = this.props.navigation.navigationState;
+                  stacks(currentNavigatorUID).popToTop(currentNavigatorUID)
+              })
+          }}
+        >
           <StackNavigation initialRoute="home" />
         </TabNavigationItem>
 

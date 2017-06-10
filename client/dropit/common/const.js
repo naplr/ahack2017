@@ -17,7 +17,7 @@ export const sharedStyles = StyleSheet.create({
     },
 
     fontMain:{
-        fontSize: 16,
+        fontSize: 18,
         color: '#C42E34'
     },
 

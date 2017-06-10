@@ -150,7 +150,7 @@ export default class DropContentPickScreen extends React.Component {
             color='#C42E34'
             title="Continue >"
             onPress={() => this.props.navigator.push(
-                'dropLocationPick',
+                'dropNamePick',
                 {
                     dropInfo: {
                         content: {
