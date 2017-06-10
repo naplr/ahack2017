@@ -8,7 +8,7 @@ from geoposition import Geoposition
 class ApiUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = ApiUser
-        fields = (['userid'])
+        fields = (['userId'])
 
 
 class DropSerializerDebug(serializers.ModelSerializer):

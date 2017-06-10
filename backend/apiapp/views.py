@@ -41,7 +41,7 @@ def explore(request):
         if (lng is None):
             return HttpResponseBadRequest('must provide lng')
         try:
-            user = ApiUser.objects.get(userid=user_id)
+            user = ApiUser.objects.get(userId=user_id)
         except ApiUser.DoesNotExist:
             return HttpResponseBadRequest('user with that ID not found')
 
