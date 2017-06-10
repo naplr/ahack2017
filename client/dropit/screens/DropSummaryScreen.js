@@ -75,7 +75,7 @@ export default class DropSummaryScreen extends React.Component {
                     <View>
                         <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
                             <Text style={sharedStyles.fontMain}>
-                                {`Content: ${dropInfo.content.data}\n`}
+                                {`Content: ${dropInfo.name} + ${dropInfo.amount}\n`}
                             </Text>
                             <View style={{ width:335, flex:1, flexDirection:'row', justifyContent:'space-between' }}>
                                 <Text style={sharedStyles.fontMain}>
