@@ -3,6 +3,7 @@ from .models import *
 from drf_extra_fields.fields import Base64ImageField
 from geoposition.fields import GeopositionField
 from geoposition import Geoposition
+from django.utils.dateformat import format
 
 
 class ApiUserSerializer(serializers.ModelSerializer):
@@ -12,9 +13,15 @@ class ApiUserSerializer(serializers.ModelSerializer):
 
 
 class DropSerializerDebug(serializers.ModelSerializer):
+    #from_date = serializers.SerializerMethodField()
+    #to_date = serializers.SerializerMethodField()
+
+    #def get_from_date(self, obj):
+    #    return format(obj.from_date, 'U')
+
     class Meta:
         model = Drop
-        fields = (['id', 'lat', 'lng', 'image', 'name', 'total_amount', 'creator', 'receiver'])
+        fields = (['id', 'lat', 'lng', 'image', 'name', 'total_amount', 'creator', 'receiver', 'from_date', 'to_date'])
 
 
 class DropSerializer(serializers.ModelSerializer):
@@ -35,7 +42,7 @@ class DropSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Drop
-        fields = (['name', 'id', 'userId', 'lat', 'lng', 'image', 'total_amount'])
+        fields = (['name', 'id', 'userId', 'lat', 'lng', 'image', 'total_amount', 'from_date', 'to_date'])
         # read_only_fields = ('image', 'name')
 
 

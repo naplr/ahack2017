@@ -31,6 +31,7 @@ class FilterViewSet(viewsets.ModelViewSet):
 
 
 def explore(request):
+    # TODO CHECK TIME
     if request.method == 'GET':
 
         user_id = request.GET.get('userId', None)
@@ -76,8 +77,9 @@ def collect_drop(request):
         if drop.total_amount <= 0:
             return JsonResponse({"status": 'drop count depleted'})
         # TODO maybe check specific user haven't got this drop already
-        user.drop_received.add(drop)
-        user.save()
+        #user.drop_received.add(drop)
+        #user.save()
+        UserDrop.objects.create(user=user, drop=drop)
         drop.total_amount = drop.total_amount - 1
         drop.save()
         return JsonResponse({"status": 'successful'})

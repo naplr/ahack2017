@@ -38,7 +38,8 @@ class Drop(models.Model):
     image = models.ImageField(upload_to='drop_image', height_field=None, width_field=None, max_length=100, null=True, blank=True)
     name = models.CharField(max_length=128, default='')
     total_amount = models.IntegerField(default=0)
-    created_date = models.DateTimeField(default=timezone.now)
+    from_date = models.IntegerField(default=None, null=True, blank=True)
+    to_date = models.IntegerField(default=None, null=True, blank=True)
 
     def __str__(self):
         return '{},{},{}'.format(self.name, self.lat, self.lng)
@@ -66,7 +67,12 @@ class CustomUserManager(BaseUserManager):
 class ApiUser(models.Model):
     userId = models.CharField(max_length=255, unique=True, primary_key=True, editable=True)
     drop_created = models.ManyToManyField(Drop, related_name='creator', blank=True)
-    drop_received = models.ManyToManyField(Drop, related_name='receiver', blank=True)
+    drop_received = models.ManyToManyField(Drop, related_name='receiver', blank=True, through='UserDrop')
 
     def __str__(self):
         return self.userId
+
+class UserDrop(models.Model):
+    user = models.ForeignKey(ApiUser, on_delete=models.CASCADE)
+    drop = models.ForeignKey(Drop, on_delete=models.CASCADE)
+    date = models.IntegerField(default=format(timezone.now(), 'U'), null=True, blank=True)
