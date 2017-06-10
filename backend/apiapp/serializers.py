@@ -13,8 +13,8 @@ class ApiUserSerializer(serializers.ModelSerializer):
 
 class DropSerializerDebug(serializers.ModelSerializer):
     class Meta:
-        model = ApiUser
-        fields = (['__all__'])
+        model = Drop
+        fields = (['id', 'lat', 'lng', 'image', 'name', 'total_amount', 'creator', 'receiver'])
 
 
 class DropSerializer(serializers.ModelSerializer):
@@ -22,11 +22,11 @@ class DropSerializer(serializers.ModelSerializer):
     image = Base64ImageField(required=False, allow_null=True)
 
     def create(self, validated_data):
-        userid = validated_data.pop('userId')
+        userId = validated_data.pop('userId')
         # 'token' will be in data if successful
         drop_obj = super(DropSerializer, self).create(validated_data)
         print(drop_obj)
-        creator = ApiUser.objects.get(userid=userid)
+        creator = ApiUser.objects.get(userId=userId)
         print('---creator--')
         print(creator)
         creator.drop_created.add(drop_obj)
@@ -35,7 +35,7 @@ class DropSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Drop
-        fields = (['id', 'userId', 'lat', 'lng', 'image', 'name', 'total_amount'])
+        fields = (['name', 'id', 'userId', 'lat', 'lng', 'image', 'total_amount'])
         # read_only_fields = ('image', 'name')
 
 

@@ -46,7 +46,7 @@ def explore(request):
             return HttpResponseBadRequest('user with that ID not found')
 
         nearby = Drop.objects.filter().exclude(creator=user,receiver=user)
-        return JsonResponse([d['id'] for n in nearby], safe=False)
+        return JsonResponse([n['id'] for n in nearby], safe=False)
     else:
         return HttpResponseNotAllowed('use GET only')
 
