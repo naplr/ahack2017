@@ -1,3 +1,73 @@
+from django.conf import settings
+from django.utils import timezone
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from location_field.models.plain import PlainLocationField
 from django.db import models
+from django.utils import timezone
+from geoposition.fields import GeopositionField
 
-# Create your models here.
+import uuid
+
+if hasattr(settings, 'PROJECT_NAME') and settings.PROJECT_NAME == 'edhip': import vinaigrette
+
+
+class Filter(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    MALE = 0
+    FEMALE = 1
+    BOTH = 2
+    GENDER = (
+        (MALE, 'MALE'),
+        (FEMALE, 'FEMALE'),
+        (BOTH, 'BOTH'),
+    )
+
+    gender = models.IntegerField(choices=GENDER, default=0)
+    max_age = models.IntegerField(default=100)
+    min_age = models.IntegerField(default=0)
+    # TODO LIKES
+
+
+class Drop(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    filter = models.ForeignKey(Filter, null=True, blank=True)
+    lat = models.FloatField(default=0.0)
+    lng = models.FloatField(default=0.0)
+    location = models.CharField(max_length=255, default='0,0')
+    image = models.ImageField(upload_to='drop_image', height_field=None, width_field=None, max_length=100, null=True)
+    name = models.CharField(max_length=128, default='')
+    total_amount = models.IntegerField(default=0)
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return '{},{},{}'.format(self.name, self.lat, self.lng)
+
+
+class CustomUserManager(BaseUserManager):
+    use_in_migrations = True
+
+    def _create_user(self, email, password, **extra_fields):
+        """
+        Creates and saves a User with the given username, email and password.
+        """
+        if not email:
+            raise ValueError('The given email must be set')
+        email = self.normalize_email(email)
+        user = ApiUser(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email, password=None, **extra_fields):
+        return self._create_user(email, password, **extra_fields)
+
+
+class ApiUser(models.Model):
+    userId = models.CharField(max_length=255, unique=True, primary_key=True, editable=True)
+    drop_created = models.ManyToManyField(Drop, related_name='creator', blank=True)
+    drop_received = models.ManyToManyField(Drop, related_name='receiver', blank=True)
+
+    def __str__(self):
+        return self.userId
