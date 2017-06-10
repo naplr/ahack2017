@@ -6,7 +6,8 @@ from .models import *
 import json
 from django.views.decorators.csrf import csrf_exempt
 import gpxpy.geo
-
+from django.db.models import Q
+import datetime
 
 # Create your views here.
 class ApiUserViewSet(viewsets.ModelViewSet):
@@ -48,8 +49,12 @@ def explore(request):
         except ApiUser.DoesNotExist:
             return HttpResponseBadRequest('user with that ID not found')
 
-        nearby = Drop.objects.filter(total_amount__gt=0, lat__lt=float(lat) + 0.1, lat__gt=float(lat) - 0.1, lng__lt=float(lng) + 0.1, lng__gt=float(lng) - 0.1).exclude(creator=user).exclude(receiver=user)  # exclude drops create and receive by this
-        return JsonResponse([n.name for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
+        nearby = Drop.objects.filter(Q(from_date__isnull=True) | Q(from_date__lte=datetime.datetime.utcnow()))\
+            .filter(Q(to_date__isnull=True) | Q(to_date__gte=datetime.datetime.utcnow()))\
+            .filter(total_amount__gt=0, lat__lt=float(lat) + 0.1, lat__gt=float(lat) - 0.1, lng__lt=float(lng) + 0.1, lng__gt=float(lng) - 0.1)\
+            .exclude(creator=user)\
+            .exclude(receiver=user)  # exclude drops create and receive by this
+        return JsonResponse([n.id for n in nearby if gpxpy.geo.haversine_distance(float(lat), float(lng), n.lat, n.lng) <= 2000], safe=False)
     else:
         return HttpResponseNotAllowed('use GET only')
 
@@ -77,6 +82,8 @@ def collect_drop(request):
         if drop.total_amount <= 0:
             return JsonResponse({"status": 'drop count depleted'})
         # TODO maybe check specific user haven't got this drop already
+        # TODO receiver ain't the creator!
+        # TODO expired!
         #user.drop_received.add(drop)
         #user.save()
         UserDrop.objects.create(user=user, drop=drop)

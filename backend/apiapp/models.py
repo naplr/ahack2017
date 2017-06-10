@@ -5,6 +5,7 @@ from location_field.models.plain import PlainLocationField
 from django.db import models
 from django.utils import timezone
 from geoposition.fields import GeopositionField
+from django.utils.dateformat import format
 
 import uuid
 
@@ -38,8 +39,8 @@ class Drop(models.Model):
     image = models.ImageField(upload_to='drop_image', height_field=None, width_field=None, max_length=100, null=True, blank=True)
     name = models.CharField(max_length=128, default='')
     total_amount = models.IntegerField(default=0)
-    from_date = models.IntegerField(default=None, null=True, blank=True)
-    to_date = models.IntegerField(default=None, null=True, blank=True)
+    from_date = models.DateTimeField(default=None, null=True, blank=True)
+    to_date = models.DateTimeField(default=None, null=True, blank=True)
 
     def __str__(self):
         return '{},{},{}'.format(self.name, self.lat, self.lng)
@@ -75,4 +76,4 @@ class ApiUser(models.Model):
 class UserDrop(models.Model):
     user = models.ForeignKey(ApiUser, on_delete=models.CASCADE)
     drop = models.ForeignKey(Drop, on_delete=models.CASCADE)
-    date = models.IntegerField(default=format(timezone.now(), 'U'), null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now, null=True, blank=True)
