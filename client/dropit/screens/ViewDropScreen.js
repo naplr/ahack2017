@@ -114,7 +114,7 @@ export default class ViewDropScreen extends React.Component {
                 >
                   <Image
                     style={styles.AddImageButton}
-                    source={require('./trashloadbutton.png')}
+                    source={require('./trashbutton.png')}
                   />
                 </TouchableHighlight> 
                 <View style={{marginTop: 5 }}>
