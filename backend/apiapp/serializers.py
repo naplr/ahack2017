@@ -38,6 +38,10 @@ class DropSerializer(serializers.ModelSerializer):
     image = Base64ImageField(required=False, allow_null=True)
     from_date = UnixEpochDateField(allow_null=True)
     to_date = UnixEpochDateField(allow_null=True)
+    creator = serializers.SerializerMethodField()
+
+    def get_creator(self, obj):
+        return obj.creator.first().userId
 
     def create(self, validated_data):
         userId = validated_data.pop('userId')
@@ -50,7 +54,7 @@ class DropSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Drop
-        fields = (['name', 'id', 'userId', 'lat', 'lng', 'image', 'total_amount', 'from_date', 'to_date'])
+        fields = (['name', 'id', 'userId', 'lat', 'lng', 'image', 'total_amount', 'from_date', 'to_date', 'creator'])
 
 
 class FilterSerializer(serializers.ModelSerializer):

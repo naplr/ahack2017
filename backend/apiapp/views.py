@@ -44,7 +44,6 @@ def get_nearby_location(lat,lng,user):
     return nearby[0].id
 
 def explore(request):
-    # TODO CHECK TIME
     if request.method == 'GET':
 
         user_id = request.GET.get('userId', None)
@@ -93,9 +92,7 @@ def collect_drop(request):
             return HttpResponseBadRequest('drop with that ID not found')
         if drop.total_amount <= 0:
             return JsonResponse({"status": 'drop count depleted'})
-        # TODO maybe check specific user haven't got this drop already
         # TODO receiver ain't the creator!
-        # TODO expired!
         # user.drop_received.add(drop)
         # user.save()
         UserDrop.objects.create(user=user, drop=drop)
