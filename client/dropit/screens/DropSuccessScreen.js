@@ -43,7 +43,7 @@ export default class DropSummaryScreen extends React.Component {
     );
   }
 
-  _maybeRenderDevelopmentModeWarning() {
+  _bakmaybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
       const learnMoreButton = (
         <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>

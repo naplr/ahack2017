@@ -108,7 +108,7 @@ export default class DropLocationPickScreen extends React.Component {
         this.setState({ location });
     };
 
-    _maybeRenderDevelopmentModeWarning() {
+    _bakmaybeRenderDevelopmentModeWarning() {
         if (__DEV__) {
         const learnMoreButton = (
             <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>

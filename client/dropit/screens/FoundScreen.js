@@ -95,7 +95,7 @@ export default class FoundScreen  extends React.Component {
         )
     }
 
-    _maybeRenderDevelopmentModeWarning() {
+    _bakmaybeRenderDevelopmentModeWarning() {
         if (__DEV__) {
         const learnMoreButton = (
             <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>

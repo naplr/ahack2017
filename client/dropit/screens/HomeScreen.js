@@ -35,7 +35,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
+            {this._bakmaybeRenderDevelopmentModeWarning()}
 
             <Text style={styles.getStartedText}>
               Get started by opening
@@ -87,7 +87,7 @@ export default class HomeScreen extends React.Component {
       this.props.navigator.push('contentPick', {name: 'Hello People'})
   }
 
-  _maybeRenderDevelopmentModeWarning() {
+  _bakmaybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
       const learnMoreButton = (
         <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
