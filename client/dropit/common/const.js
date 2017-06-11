@@ -16,6 +16,12 @@ export const sharedStyles = StyleSheet.create({
         color: '#9B9B9B'
     },
 
+    fontGreyHuge:{
+        fontSize: 32,
+        color: '#9B9B9B'
+    },
+
+
     fontMain:{
         fontSize: 18,
         color: '#C42E34'
@@ -24,6 +30,12 @@ export const sharedStyles = StyleSheet.create({
     fontMainBig:{
         fontSize: 24,
         color: '#C42E34'
+    },
+
+    fontMainHuge:{
+        fontSize: 32,
+        color: '#C42E34',
+        fontWeight:'bold',
     },
 
     container: {
