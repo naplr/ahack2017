@@ -14,7 +14,7 @@ import {
 
 import { MapView, Constants, Location, Permissions } from 'expo';
 import { getRequest, postRequest } from '../common/helper'
-import { sharedStyles } from '../common/const'
+import { sharedStyles, myUserId } from '../common/const'
 
 export default class ViewDropScreen extends React.Component {
     static route = {
@@ -76,7 +76,7 @@ export default class ViewDropScreen extends React.Component {
         }) 
 
         postRequest('collected-drop', {
-            userId: 'u2',
+            userId: myUserId,
             dropId: this.state.dropInfo.id
         })
             .then(res => {

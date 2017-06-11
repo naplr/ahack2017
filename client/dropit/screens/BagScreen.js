@@ -13,6 +13,8 @@ import moment from 'moment'
 import { postRequest, getRequest } from '../common/helper'
 import { sharedStyles, BASE_URL } from '../common/const'
 
+import { myUserId } from '../common/const'
+
 export default class BagScreen extends React.Component {
     static route = {
         navigationBar: {
@@ -26,7 +28,7 @@ export default class BagScreen extends React.Component {
 
     componentWillMount() {
         const params = {
-            userId: 'u2',
+            userId: myUserId,
             filter: 'received'
         }
 

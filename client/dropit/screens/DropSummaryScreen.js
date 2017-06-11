@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { postRequest, getRequest } from '../common/helper'
-import { sharedStyles } from '../common/const'
+import { sharedStyles, myUserId } from '../common/const'
 
 export default class DropSummaryScreen extends React.Component {
     static route = {
@@ -159,7 +159,7 @@ export default class DropSummaryScreen extends React.Component {
                         color='#C42E34'
                         title="DROP IT! >"
                         onPress={() => this.drop(
-                                'u1',
+                                myUserId,
                                 dropInfo.name,
                                 dropInfo.amount,
                                 dropInfo.content.data,

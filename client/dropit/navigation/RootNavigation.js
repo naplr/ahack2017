@@ -11,6 +11,8 @@ import { FontAwesome } from '@expo/vector-icons';
 // import BackgroundGeolocation from "react-native-background-geolocation"
 // import BackgroundTimer from 'react-native-background-timer'
 
+import { myUserId } from '../common/const'
+
 import TimerMixin from 'react-timer-mixin'
 import { MapView, Constants, Location, Permissions } from 'expo'
 

@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { getRequest } from '../common/helper'
-import { sharedStyles } from '../common/const'
+import { sharedStyles, myUserId } from '../common/const'
 
 export default class FoundScreen  extends React.Component {
     static route = {
@@ -26,7 +26,7 @@ export default class FoundScreen  extends React.Component {
 
     componentWillMount() {
         const params = {
-            userId: 'u2',
+            userId: myUserId,
         }
 
         getRequest(`found-drops`, params)

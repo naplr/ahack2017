@@ -56,3 +56,5 @@ export const sharedStyles = StyleSheet.create({
 
 export const BASE_API_URL = "http://128.199.191.123:8000/api"
 export const BASE_URL = "http://128.199.191.123:8000"
+
+export const myUserId = "Napol"

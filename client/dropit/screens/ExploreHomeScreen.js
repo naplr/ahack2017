@@ -16,6 +16,8 @@ import { MapView, Constants, Location, Permissions } from 'expo';
 import { MonoText } from '../components/StyledText';
 import { getRequest, postRequest } from '../common/helper'
 
+import { myUserId } from '../common/const'
+
 export default class DropContentPickScreen extends React.Component {
   static route = {
     navigationBar: {
@@ -77,7 +79,7 @@ export default class DropContentPickScreen extends React.Component {
     this.setState({ location });
 
     const params = {
-        userId: 'u2',
+        userId: myUserId,
         lat: location.coords.latitude,
         lng: location.coords.longitude
     }
