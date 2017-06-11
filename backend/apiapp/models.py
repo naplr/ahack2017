@@ -61,19 +61,19 @@ class ApiUser(models.Model):
     userId = models.CharField(max_length=255, unique=True, primary_key=True, editable=True)
     drop_created = models.ManyToManyField(Drop, related_name='creator', blank=True)
     drop_received = models.ManyToManyField(Drop, related_name='receiver', blank=True, through='UserDrop')
-    drop_found = models.ManyToManyField(Drop, related_name='founder', blank=True, through='FoundDrop')
+    drop_found = models.ManyToManyField(Drop, related_name='founder', blank=True,)
 
     def __str__(self):
         return self.userId
 
 class UserDrop(models.Model):
     user = models.ForeignKey(ApiUser, on_delete=models.CASCADE)
-    drop = models.ForeignKey(Drop, on_delete=models.CASCADE)
+    drop = models.ForeignKey(Drop, on_delete=models.CASCADE, related_name='userdrop')
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
 
-class FoundDrop(models.Model):
-    user = models.ForeignKey(ApiUser, on_delete=models.CASCADE)
-    drop = models.ForeignKey(Drop, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=timezone.now, null=True, blank=True)
+# class FoundDrop(models.Model):
+#     user = models.ForeignKey(ApiUser, on_delete=models.CASCADE)
+#     drop = models.ForeignKey(Drop, on_delete=models.CASCADE)
+#     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
