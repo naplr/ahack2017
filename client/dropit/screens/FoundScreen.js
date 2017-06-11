@@ -41,8 +41,6 @@ export default class FoundScreen  extends React.Component {
     }
 
     render() {
-        const { dropInfo } = this.props.route.params
-        console.log(dropInfo)
         return (
             <View style={sharedStyles.container}>
                 <View style={sharedStyles.title}>

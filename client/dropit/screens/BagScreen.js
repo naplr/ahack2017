@@ -10,10 +10,10 @@ import {
   Button,
 } from 'react-native'
 import moment from 'moment'
-import { postRequest } from '../common/helper'
+import { postRequest, getRequest } from '../common/helper'
 import { sharedStyles } from '../common/const'
 
-export default class DropSummaryScreen extends React.Component {
+export default class BagScreen extends React.Component {
     static route = {
         navigationBar: {
         visible: true,
@@ -21,49 +21,27 @@ export default class DropSummaryScreen extends React.Component {
     };
 
     state = {
-        errorMessage: ""
+        myDrops: []
     }
 
-    _drop(userId, lat, lng, base64img, name, amount) {
-        postRequest('users/', {
-            userId: 'u123111'
-        })
-            .then(res => {
-                console.log(res)
-            })
-            .catch(r => {
-                console.log(r)
-            })
-    }
+    componentWillMount() {
+        const params = {
+            userId: 'u2',
+            filter: 'received'
+        }
 
-    drop(userId, name, amount, base64img, lat, lng, fromDate, toDate) {
-        postRequest('drops/', {
-            userId: userId,
-            lat: lat,
-            lng: lng,
-            image: base64img,
-            name: name,
-            total_amount: amount,
-            from_date: fromDate.getTime()/1000,
-            to_date: toDate.getTime()/1000
-        })
+        getRequest(`drops`, params)
             .then(res => {
-                this.props.navigator.push(
-                    'dropSuccess', {
-                        status: 'success'
-                    }
-                )
-            })
-            .catch(r => {
-                console.log(r)
                 this.setState({
-                errorMessage: r
-            })})
+                    myDrops: res
+                })
+            })
+            .catch(r => {
+                console.log(r.message)
+            })
     }
 
     render() {
-        const { dropInfo } = this.props.route.params
-        console.log(dropInfo)
         return (
             <View style={sharedStyles.container}>
                 <View style={sharedStyles.title}>
@@ -74,83 +52,45 @@ export default class DropSummaryScreen extends React.Component {
 
                 <View style={{flex:1, flexDirection:'column',justifyContent:'space-around', width: 335}}>
 
-                    <View style={{width: '100%', flexDirection:'row',justifyContent:'flex-start', marginTop:20,backgroundColor:'#ffffff' }}>
-                        <View>
-                        { dropInfo.content.image != "" && dropInfo.content.image != null
-                                ?   <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
-                                : null }
-                        </View>
-                        <View style={{flex: 1, flexDirection:'column',justifyContent:'space-between', padding:10}} >
-                            <View style={{width:150}}>
-                                <Text style={sharedStyles.fontMainBig}>
-                                    {`${dropInfo.name}`}
-                                </Text>
+                    { this.state.myDrops.map(d => {
+                        return (
+                            <View 
+                                onResponderMove={(e) => {
+                                    const dropInfo = {
+                                        id: d.id,
+                                        name: d.name,
+                                        creator: d.creator,
+                                        image: d.image
+                                    }
+                                    this.props.navigator.push('viewDrop', { dropInfo: dropInfo })
+                                }}
+                                style={{width: '100%', flexDirection:'row',justifyContent:'flex-start', marginTop:20,backgroundColor:'#ffffff' } }
+                            >
+                                <View>
+                                { d.image != "" && d.image != null
+                                        ?   <Image source={{ uri: d.image }} style={{ width: 120, height: 120 }} />
+                                        : null }
+                                </View>
+                                <View style={{flex: 1, flexDirection:'column',justifyContent:'space-between', padding:10}} >
+                                    <View style={{width:150}}>
+                                        <Text style={sharedStyles.fontMainBig}>
+                                            {`${d.name}`}
+                                        </Text>
+                                    </View>
+                                    <View>
+                                        <Text style={sharedStyles.fontGrey}>
+                                            {`Picked date: ${d.from_date}`}
+                                        </Text>
+                                    </View>
+                                    <View>
+                                        <Text style={sharedStyles.fontGrey}>
+                                            {`Dropped by: ${d.creator}`}
+                                        </Text>
+                                    </View>
+                                </View>
                             </View>
-                            <View>
-                                <Text style={sharedStyles.fontGrey}>
-                                    {`Picked date: ${dropInfo.userId}`}
-                                </Text>
-                            </View>
-                            <View>
-                                <Text style={sharedStyles.fontGrey}>
-                                    {`Dropped by: ${dropInfo.userId}`}
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-
-
-                    <View style={{width: '100%', flexDirection:'row',justifyContent:'flex-start', marginTop:20,backgroundColor:'#ffffff' }}>
-                        <View>
-                        { dropInfo.content.image != "" && dropInfo.content.image != null
-                                ?   <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
-                                : null }
-                        </View>
-                        <View style={{flex: 1, flexDirection:'column',justifyContent:'space-between', padding:10}} >
-                            <View style={{width:150}}>
-                                <Text style={sharedStyles.fontMainBig}>
-                                    {`${dropInfo.name}`}
-                                </Text>
-                            </View>
-                            <View>
-                                <Text style={sharedStyles.fontGrey}>
-                                    {`Picked date: ${dropInfo.userId}`}
-                                </Text>
-                            </View>
-                            <View>
-                                <Text style={sharedStyles.fontGrey}>
-                                    {`Dropped by: ${dropInfo.userId}`}
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-
-      
-                    <View style={{width: '100%', flexDirection:'row',justifyContent:'flex-start', marginTop:20,backgroundColor:'#ffffff' }}>
-                        <View>
-                        { dropInfo.content.image != "" && dropInfo.content.image != null
-                                ?   <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
-                                : null }
-                        </View>
-                        <View style={{flex: 1, flexDirection:'column',justifyContent:'space-between', padding:10}} >
-                            <View style={{width:150}}>
-                                <Text style={sharedStyles.fontMainBig}>
-                                    {`${dropInfo.name}`}
-                                </Text>
-                            </View>
-                            <View>
-                                <Text style={sharedStyles.fontGrey}>
-                                    {`Picked date: ${dropInfo.userId}`}
-                                </Text>
-                            </View>
-                            <View>
-                                <Text style={sharedStyles.fontGrey}>
-                                    {`Dropped by: ${dropInfo.userId}`}
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-
+                        )
+                    })}
                 </View>
             </View>
         )
