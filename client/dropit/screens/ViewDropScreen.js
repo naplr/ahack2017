@@ -101,23 +101,33 @@ export default class ViewDropScreen extends React.Component {
         }*/
 
         return (
-        <View style={sharedStyles.container}>
-            <Text style={styles.getStartedText}>
-                "You have picked up"
-            </Text>
-            <Text style={styles.getStartedText}>
-                { this.state.dropInfo.name }
-            </Text>
+          <View style={sharedStyles.container}>
+            <View >
+              <View style={{ flexDirection:'column', justifyContent:'center',alignItems:'center', marginTop:64, marginBottom:10}} >
+                <Text style={{fontSize: 22, color: '#9B9B9B'}} >
+                    You have picked up
+                </Text>
+                <Text style={sharedStyles.fontMainBig}>
+                  { this.state.dropInfo.name }
+                </Text>
+              </View>
+            </View>
 
+            <View>
+              <View>
                 { this.state.dropInfo.image != "" && this.state.dropInfo.image != null
-                    ? <Image source={{ uri: this.state.dropInfo.image }} style={{ width: 200, height: 200 }} />
+                    ? <Image source={{ uri: this.state.dropInfo.image }} style={{ width: 300, height: 300 }} />
                     : null }
+              </View>
+              <View>
+                <Text style={styles.getStartedText}>
+                    { `drop by: ${this.state.dropInfo.creator}` }
+                </Text>
+              </View>
+            </View>
 
-            <Text style={styles.getStartedText}>
-                { `drop by: ${this.state.dropInfo.creator}` }
-            </Text>
-            <View style={{flexDirection:'row', justifyContent:'space-around'}}>
-              <View style={{flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
+            <View style={{flex:1, flexDirection:'row', justifyContent:'space-around', alignItems:'center'}}>
+              <View style={{flex: 1, flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}>
                 <TouchableHighlight 
                 underlayColor='#F7F7F7'
                 onPress={() => this.props.navigator.push(
@@ -135,7 +145,7 @@ export default class ViewDropScreen extends React.Component {
                   </Text>
                 </View>
               </View> 
-              <View style={{flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}> 
+              <View style={{ flex:1, flexDirection:'column', justifyContent:'flex-start', alignItems:'center'}}> 
                 <TouchableHighlight 
                 onPress={ this.keepDrop }
                 underlayColor='#F7F7F7'
