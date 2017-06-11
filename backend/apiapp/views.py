@@ -142,7 +142,17 @@ def get_drops(request):
         else:
             # d = Drop.objects.values_list('id', flat=True).filter(receiver__userId=user_id)
             d = Drop.objects.filter(receiver__userId=user_id)
-        return JsonResponse(list(d), safe=False)
+
+        res = []
+        for x in d:
+            res.append({
+                'id': x.id,
+                'name': x.name,
+                'image': x.image,
+                'creator': x.creator
+            })
+            
+        return JsonResponse(list(res), safe=False)
     else:
         return HttpResponseNotAllowed('use GET only')
 
