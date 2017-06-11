@@ -46,7 +46,7 @@ export default class KeepDropSuccessScreen extends React.Component {
               color='#C42E34'
               title="Done"
               onPress={() => this.props.navigator.push(
-                  'bag'
+                  'dropContentPick'
               )}
           />
         </View>
