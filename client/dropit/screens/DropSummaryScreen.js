@@ -114,20 +114,25 @@ export default class DropSummaryScreen extends React.Component {
                 </View>
 
                 <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
-                    <View style={{ width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center', marginTop: 60 }}>
+                    {/*<View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}> 
+                        <Text style={sharedStyles.fontMain}>
+                            { renderAddr() }
+                        </Text>
+                    </View>*/}
+                    <View style={{ width:335, flexDirection:'row', justifyContent:'space-between', marginTop: 60 }}>
                         <Text style={sharedStyles.fontMain}>
                             Location:
                         </Text>
-                        <Text style={sharedStyles.fontMain}>
-                            {`${dropInfo.location.coords.latitude}`}
+                        <Text style={{fontSize: 18,color: '#C42E34', width:180, marginLeft:'auto',textAlign:'right' }}>
+                            { renderAddr() }
                         </Text>
                     </View>
 
-                    <View style={{width:335, flexDirection:'row', justifyContent:'flex-end',alignItems:'center' }}> 
+                    {/*<View style={{width:335, flexDirection:'row', justifyContent:'flex-end',alignItems:'center' }}> 
                         <Text style={sharedStyles.fontMain}>
                             {`${dropInfo.location.coords.longitude}`}
                         </Text>
-                    </View>
+                    </View>*/}
                     <View style={{ flexDirection:'column', justifyContent:'space-between',marginTop: 20}}>
                         <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}>
                             <Text style={sharedStyles.fontMain}>
@@ -146,11 +151,7 @@ export default class DropSummaryScreen extends React.Component {
                             </Text>
                         </View>
                     </View> 
-                    <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}> 
-                        <Text style={sharedStyles.fontMain}>
-                            { renderAddr() }
-                        </Text>
-                    </View>
+
                 </View>
 
                 <View style={{marginTop:'auto', marginBottom: 35}}>
