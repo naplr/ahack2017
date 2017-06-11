@@ -47,7 +47,25 @@ export default class BagScreen extends React.Component {
         return (
             <View style={sharedStyles.container}>
                 <View style={sharedStyles.title}>
-                    <Text style={sharedStyles.fontMainBig}>
+                    <Text 
+                        style={sharedStyles.fontMainBig}
+                          onPress={() => {
+                            const params = {
+                                userId: myUserId,
+                                filter: 'received'
+                            }
+
+                            getRequest(`get-drops`, params)
+                                .then(res => {
+                                    this.setState({
+                                        myDrops: res
+                                    })
+                                })
+                                .catch(r => {
+                                    console.log(r.message)
+                            })
+                          }}
+                        >
                         Your Bag
                     </Text>
                 </View>
