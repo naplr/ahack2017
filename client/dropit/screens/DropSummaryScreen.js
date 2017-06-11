@@ -10,7 +10,7 @@ import {
   Button,
 } from 'react-native'
 import moment from 'moment'
-import { postRequest } from '../common/helper'
+import { postRequest, getRequest } from '../common/helper'
 import { sharedStyles } from '../common/const'
 
 export default class DropSummaryScreen extends React.Component {
@@ -61,8 +61,29 @@ export default class DropSummaryScreen extends React.Component {
             })})
     }
 
+    componentWillMount() {
+        const { dropInfo } = this.props.route.params
+        getRequest('reverse-geocode', {lat: dropInfo.location.coords.latitude, lng :dropInfo.location.coords.longitude})
+        .then(res => {
+            this.setState({ geoCode: res })
+        })
+        .catch(r => {
+            console.log(r)
+        })
+
+    }
+
+    renderAddr() {
+        if(this.state.geoCode != null && this.state.geoCode.results ){
+            const geoCode = this.state.geoCode.results[0].formatted_address
+            return (<Text>{ geoCode }</Text>);
+        }
+        return (<Text>No formatted address available</Text>);
+    }
+
     render() {
         const { dropInfo } = this.props.route.params
+        renderAddr = this.renderAddr.bind(this)
         console.log(dropInfo)
         return (
             <View style={sharedStyles.container}>
@@ -111,6 +132,11 @@ export default class DropSummaryScreen extends React.Component {
                             </Text>
                         </View>
                     </View> 
+                    <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}> 
+                        <Text style={sharedStyles.fontMain}>
+                            { renderAddr() }
+                        </Text>
+                    </View>
                 </View>
 
                 <View style={{marginTop:'auto', marginBottom: 35}}>
