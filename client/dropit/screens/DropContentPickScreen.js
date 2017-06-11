@@ -103,9 +103,9 @@ export default class DropContentPickScreen extends React.Component {
                 />
               </TouchableHighlight>
             </View>
-            <View style={{marginTop: 5 }}>
+            <View style={{marginTop: 7 }}>
               <Text style={sharedStyles.fontGrey}>
-                Add Image to drop
+                Add Thing to drop
               </Text>
             </View> 
           </View> }
@@ -114,11 +114,6 @@ export default class DropContentPickScreen extends React.Component {
           <View style={{ flexDirection:'column', justifyContent:'center' }}>
             <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />
             <View style={{ width:300, flexDirection:'row', justifyContent:'flex-start', marginLeft:-10 }}>
-              {/*<FontAwesome
-                name={name}
-                size={32}
-                color={isSelected ? Colors.tabIconSelected : Colors.tabIconDefault}
-              />*/}
               <Button
               color='#4990E2'
               title="Change image"
@@ -128,22 +123,6 @@ export default class DropContentPickScreen extends React.Component {
           </View>
           }
         </View>
-
-        {/*<View>
-          <Button
-              color='#9B9B9B'
-              title="Add Image to drop"
-              onPress={this._pickImage}
-          />
-          {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-        </View>*/}
-
-        {/*<View>
-          <Text>
-              "Content Stuff"
-          </Text>
-        </View>*/}
 
         <View style={{marginTop:'auto', marginBottom: 35}}>
           <Button

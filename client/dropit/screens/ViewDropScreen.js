@@ -104,7 +104,7 @@ export default class ViewDropScreen extends React.Component {
           <View style={sharedStyles.container}>
             <View >
               <View style={{ flexDirection:'column', justifyContent:'center',alignItems:'center', marginTop:64, marginBottom:10}} >
-                <Text style={{fontSize: 22, color: '#9B9B9B'}} >
+                <Text style={{fontSize: 20, color: '#9B9B9B'}} >
                     You have picked up
                 </Text>
                 <Text style={sharedStyles.fontMainBig}>
@@ -119,9 +119,12 @@ export default class ViewDropScreen extends React.Component {
                     ? <Image source={{ uri: this.state.dropInfo.image }} style={{ width: 300, height: 300 }} />
                     : null }
               </View>
-              <View>
-                <Text style={styles.getStartedText}>
-                    { `drop by: ${this.state.dropInfo.creator}` }
+              <View style={{ flexDirection:'row', justifyContent:'flex-start', marginTop: 5}}>
+                <Text style={sharedStyles.fontGrey}>
+                    Dropped by: 
+                </Text>
+                <Text style={sharedStyles.fontMain}>
+                    { `${this.state.dropInfo.creator}` }
                 </Text>
               </View>
             </View>
@@ -192,89 +195,5 @@ export default class ViewDropScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 15,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 80,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 140,
-    height: 38,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 23,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+
 });

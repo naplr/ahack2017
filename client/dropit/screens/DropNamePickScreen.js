@@ -69,10 +69,9 @@ export default class DropNamePickScreen extends React.Component {
                   />
                 </View>
                 <View style={{
-                    
                     width: 335, 
                     flexDirection:'row', 
-                    justifyContent:'center',
+                    justifyContent:'flex-start',
                     alignItems:'center', borderBottomWidth:1, 
                     borderColor:'#9B9B9B'}}
                 >

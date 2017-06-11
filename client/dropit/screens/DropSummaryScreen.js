@@ -93,10 +93,24 @@ export default class DropSummaryScreen extends React.Component {
                     </Text>
                 </View>
 
-                <View style={{width: 335, flexDirection:'row',justifyContent:'flex-start', marginTop:20, backgroundColor:'#ffffff' }}>
+                <View style={{width: 335, flexDirection:'row',justifyContent:'flex-start', marginTop:20,backgroundColor:'#ffffff' }}>
+                    <View>
                     { dropInfo.content.image != "" && dropInfo.content.image != null
                             ?   <Image source={{ uri: dropInfo.content.image }} style={{ width: 120, height: 120 }} />
                             : null }
+                    </View>
+                    <View style={{flex: 1, flexDirection:'column',justifyContent:'flex-start', padding:10}} >
+                        <View style={{width:150}}>
+                            <Text style={sharedStyles.fontMainBig}>
+                                {`${dropInfo.name}`}
+                            </Text>
+                        </View>
+                        <View style={{ marginTop:'auto'}}>
+                            <Text style={sharedStyles.fontGrey}>
+                                {`Amount: ${dropInfo.amount}`}
+                            </Text>
+                        </View>
+                    </View>
                 </View>
 
                 <View style={{flex:1, flexDirection:'column',justifyContent:'flex-start' }}>
