@@ -43,7 +43,7 @@ export default class RootNavigation extends React.Component {
         this.setState({ location });
 
         const params = {
-            userId: 'u2',
+            userId: myUserId,
             lat: location.coords.latitude,
             lng: location.coords.longitude
         }
