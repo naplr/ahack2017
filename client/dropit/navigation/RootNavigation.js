@@ -27,7 +27,7 @@ export default class RootNavigation extends React.Component {
     componentDidMount() {
         // this._notificationSubscription = this._registerForPushNotifications();
 
-        TimerMixin.setInterval(this._getLocationAsync, 5000)
+        // TimerMixin.setInterval(this._getLocationAsync, 5000)
     }
 
 

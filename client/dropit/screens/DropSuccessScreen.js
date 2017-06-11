@@ -14,7 +14,7 @@ import {
 import { MonoText } from '../components/StyledText';
 import { sharedStyles } from '../common/const'
 
-export default class DropSummaryScreen extends React.Component {
+export default class DropSuccessScreen extends React.Component {
   static route = {
     navigationBar: {
       visible: false,
