@@ -8,18 +8,67 @@ import {
 } from '@expo/ex-navigation';
 import { FontAwesome } from '@expo/vector-icons';
 
+// import BackgroundGeolocation from "react-native-background-geolocation"
+// import BackgroundTimer from 'react-native-background-timer'
+
+import TimerMixin from 'react-timer-mixin'
+import { MapView, Constants, Location, Permissions } from 'expo'
+
+import { getRequest, postRequest } from '../common/helper'
+
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 import registerForPushNotificationsAsync
   from '../api/registerForPushNotificationsAsync';
 
 export default class RootNavigation extends React.Component {
-  componentDidMount() {
-    this._notificationSubscription = this._registerForPushNotifications();
-  }
+    componentDidMount() {
+        this._notificationSubscription = this._registerForPushNotifications();
+
+        TimerMixin.setInterval(this._getLocationAsync, 5000)
+    }
+
+
+    _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+        this.setState({
+            errorMessage: 'Permission to access location was denied',
+        });
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        this.setState({ location });
+
+        const params = {
+            userId: 'u2',
+            lat: location.coords.latitude,
+            lng: location.coords.longitude
+        }
+
+        console.log(params)
+
+        getRequest('explore', params)
+            .then(res => {
+                console.log(res)
+                const dropId = res
+                if (res != "" && res != null) {
+                    this.props.navigator.showLocalAlert(
+                        `Push notification: ${dropId}`,
+                        Alerts.notice
+                    )
+                }
+            })
+            .catch(r => {
+                console.log(r.message)
+        })
+    }
 
   componentWillUnmount() {
     this._notificationSubscription && this._notificationSubscription.remove();
+
+    // console.log(BackgroundGeolocation)
+    // BackgroundGeolocation.on('location', this.handleBgLocation)
   }
 
         //           onPress={ (tabItemOnPress, event) => {

@@ -17,7 +17,9 @@
     "moment": "^2.18.1",
     "react": "16.0.0-alpha.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-17.0.0.tar.gz",
-    "react-native-asset-library-to-base64": "^1.0.1"
+    "react-native-asset-library-to-base64": "^1.0.1",
+    "react-native-background-geolocation": "^2.8.1",
+    "react-native-background-timer": "^1.0.2"
   },
   "devDependencies": {
     "jest-expo": "~1.0.1"
