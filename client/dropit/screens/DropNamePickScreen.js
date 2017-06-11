@@ -26,8 +26,8 @@ export default class DropNamePickScreen extends React.Component {
     }
 
     state = {
-        name: "Drop Name",
-        amount: '1'
+        name: "",
+        amount: ''
     }
 
     handleNameChange = inputValue => {
@@ -62,6 +62,7 @@ export default class DropNamePickScreen extends React.Component {
                 >
                   <TextInput
                       value={this.state.name}
+                      placeholder='Name'
                       onChangeText={this.handleNameChange}
                       style={{ width: 335, height: 60, padding: 8 ,fontSize: 16}}
                       color='#9B9B9B'
@@ -77,8 +78,9 @@ export default class DropNamePickScreen extends React.Component {
                 >
                   <TextInput
                       value={this.state.amount}
+                      placeholder='amount'
                       onChangeText={this.handleAmountChange}
-                      keyboardType='number-pad'
+                      keyboardType='numeric'
                       style={{ width: 200, height: 60, padding: 8,fontSize: 16  }}
                       color='#9B9B9B'
                   />
