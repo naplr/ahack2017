@@ -23,7 +23,7 @@ import registerForPushNotificationsAsync
 
 export default class RootNavigation extends React.Component {
     componentDidMount() {
-        this._notificationSubscription = this._registerForPushNotifications();
+        // this._notificationSubscription = this._registerForPushNotifications();
 
         TimerMixin.setInterval(this._getLocationAsync, 5000)
     }
@@ -80,7 +80,7 @@ export default class RootNavigation extends React.Component {
 
   render() {
     return (
-      <TabNavigation tabBarHeight={56} initialTab="home" navigatorUID="main">
+      <TabNavigation tabBarHeight={56} initialTab="bag" navigatorUID="main">
         <TabNavigationItem
           id="dropper"
           renderIcon={isSelected => this._renderIcon('home', isSelected)}

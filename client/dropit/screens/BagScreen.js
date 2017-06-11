@@ -30,7 +30,7 @@ export default class BagScreen extends React.Component {
             filter: 'received'
         }
 
-        getRequest(`drops`, params)
+        getRequest(`get-drops`, params)
             .then(res => {
                 this.setState({
                     myDrops: res
