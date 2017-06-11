@@ -149,7 +149,7 @@ def get_drops(request):
                 'id': x.id,
                 'name': x.name,
                 'image': x.image.url,
-                'creator': x.creator
+                'creator': x.creator.name
             })
             
         return JsonResponse(list(res), safe=False)
