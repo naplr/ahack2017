@@ -9,8 +9,8 @@ import {
   View,
   Button,
 } from 'react-native'
+import moment from 'moment'
 import { postRequest } from '../common/helper'
-
 import { sharedStyles } from '../common/const'
 
 export default class DropSummaryScreen extends React.Component {
@@ -99,7 +99,7 @@ export default class DropSummaryScreen extends React.Component {
                                 Time:
                             </Text>   
                             <Text style={sharedStyles.fontMain}>
-                                {`${dropInfo.time.from}`}
+                                { `${moment(dropInfo.time.from).format('ddd MMMM DD YYYY')}` }
                             </Text>
                         </View>
                         <View style={{width:335, flexDirection:'row', justifyContent:'space-between',alignItems:'center' }}>
@@ -107,7 +107,7 @@ export default class DropSummaryScreen extends React.Component {
                                 To:
                             </Text>  
                             <Text style={sharedStyles.fontMain}>
-                                {`${dropInfo.time.to}`}
+                                { `${moment(dropInfo.time.to).format('ddd MMMM DD YYYY')}` }
                             </Text>
                         </View>
                     </View> 
