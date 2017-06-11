@@ -3,6 +3,7 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
 import { FontAwesome } from '@expo/vector-icons';
+// import RootNavigation from './navigation/RootNavigation'
 
 import Router from './navigation/Router';
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';

@@ -22,26 +22,27 @@ export default class RootNavigation extends React.Component {
     this._notificationSubscription && this._notificationSubscription.remove();
   }
 
+        //           onPress={ (tabItemOnPress, event) => {
+        //       tabItemOnPress()
+        //       this.props.navigation.performAction(({tabs, stacks}) => {
+        //           stacks('home').popToTop('home')
+        //       })
+        //   }}
+
   render() {
     return (
       <TabNavigation tabBarHeight={56} initialTab="home" navigatorUID="main">
         <TabNavigationItem
           id="home"
           renderIcon={isSelected => this._renderIcon('home', isSelected)}
-          onPress={ (tabItemOnPress, event) => {
-              tabItemOnPress()
-              this.props.navigation.performAction(({tabs, stacks}) => {
-                  const { currentNavigatorUID } = this.props.navigation.navigationState;
-                  stacks(currentNavigatorUID).popToTop(currentNavigatorUID)
-              })
-          }}
         >
           <StackNavigation initialRoute="home" />
         </TabNavigationItem>
 
         <TabNavigationItem
           id="dropper"
-          renderIcon={isSelected => this._renderIcon('home', isSelected)}>
+          renderIcon={isSelected => this._renderIcon('home', isSelected)}
+        >
           <StackNavigation initialRoute="dropContentPick" />
         </TabNavigationItem>
 
