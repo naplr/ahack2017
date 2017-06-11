@@ -148,7 +148,7 @@ def get_drops(request):
             res.append({
                 'id': x.id,
                 'name': x.name,
-                'image': x.image,
+                'image': x.image.url,
                 'creator': x.creator
             })
             
