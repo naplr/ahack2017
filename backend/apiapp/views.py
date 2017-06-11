@@ -115,6 +115,19 @@ def collect_drop(request):
         return HttpResponseNotAllowed('use POST only')
 
 
+def found_drops(request):
+    if request.method == 'GET':
+        user_id = request.GET.get('userId', None)
+        if (user_id is None):
+            return HttpResponseBadRequest('must provide userId')
+        d = Drop.objects.filter(creator__userid=founder_userid=user_id)
+        # else:
+        #     d = Drop.objects.values_list('id', flat=True).filter(receiver__userid=user_id)
+        return JsonResponse(list(d), safe=False)
+    else:
+        return HttpResponseNotAllowed('use GET only')
+
+
 def get_drops(request):
     if request.method == 'GET':
 

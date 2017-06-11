@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^api/explore', views.explore),
     url(r'^api/get-drops', views.get_drops),
     url(r'^api/collected-drop', views.collect_drop),
+    url(r'^api/found-drops', views.found_drops),
     url(r'^api/reverse-geocode', views.reverse_geocode),
 ]
