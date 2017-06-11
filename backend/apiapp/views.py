@@ -138,10 +138,10 @@ def get_drops(request):
         if (filter is None):
             return HttpResponseBadRequest('must provide filter')
         if filter == 'created':
-            d = Drop.objects.values_list('id', flat=True).filter(creator__userid=user_id)
+            d = Drop.objects.values_list('id', flat=True).filter(creator__userId=user_id)
         else:
-            d = Drop.objects.values_list('id', flat=True).filter(receiver__userid=user_id)
-            # d = Drop.objects.filter(receiver__userid=user_id)
+            # d = Drop.objects.values_list('id', flat=True).filter(receiver__userId=user_id)
+            d = Drop.objects.filter(receiver__userId=user_id)
         return JsonResponse(list(d), safe=False)
     else:
         return HttpResponseNotAllowed('use GET only')
