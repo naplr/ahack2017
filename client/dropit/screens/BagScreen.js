@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import moment from 'moment'
 import { postRequest, getRequest } from '../common/helper'
-import { sharedStyles } from '../common/const'
+import { sharedStyles, BASE_URL } from '../common/const'
 
 export default class BagScreen extends React.Component {
     static route = {
@@ -68,7 +68,7 @@ export default class BagScreen extends React.Component {
                             >
                                 <View>
                                 { d.image != "" && d.image != null
-                                        ?   <Image source={{ uri: d.image }} style={{ width: 120, height: 120 }} />
+                                        ?   <Image source={{ uri: `${BASE_URL}${d.image}` }} style={{ width: 120, height: 120 }} />
                                         : null }
                                 </View>
                                 <View style={{flex: 1, flexDirection:'column',justifyContent:'space-between', padding:10}} >
@@ -77,11 +77,11 @@ export default class BagScreen extends React.Component {
                                             {`${d.name}`}
                                         </Text>
                                     </View>
-                                    <View>
+                                    {/*<View>
                                         <Text style={sharedStyles.fontGrey}>
                                             {`Picked date: ${d.from_date}`}
                                         </Text>
-                                    </View>
+                                    </View>*/}
                                     <View>
                                         <Text style={sharedStyles.fontGrey}>
                                             {`Dropped by: ${d.creator}`}
