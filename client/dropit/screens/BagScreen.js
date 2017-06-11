@@ -46,51 +46,50 @@ export default class BagScreen extends React.Component {
             })
     }
 
-    componentDidMount() {
-        // this._notificationSubscription = this._registerForPushNotifications();
-        TimerMixin.setInterval(this._getLocationAsync, 5000)
-    }
+    // componentDidMount() {
+    //     // this._notificationSubscription = this._registerForPushNotifications();
+    //     TimerMixin.setInterval(this._getLocationAsync, 5000)
+    // }
 
 
-    _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-        this.setState({
-            errorMessage: 'Permission to access location was denied',
-        });
-        }
+    // _getLocationAsync = async () => {
+    //     let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //     if (status !== 'granted') {
+    //     this.setState({
+    //         errorMessage: 'Permission to access location was denied',
+    //     });
+    //     }
 
-        let location = await Location.getCurrentPositionAsync({});
-        this.setState({ location });
+    //     let location = await Location.getCurrentPositionAsync({});
+    //     this.setState({ location });
 
-        const params = {
-            userId: myUserId,
-            lat: location.coords.latitude,
-            lng: location.coords.longitude
-        }
+    //     const params = {
+    //         userId: myUserId,
+    //         lat: location.coords.latitude,
+    //         lng: location.coords.longitude
+    //     }
 
-        console.log(params)
+    //     console.log(params)
 
-        getRequest('explore', params)
-            .then(res => {
-                console.log(res)
-                const dropId = res
-                if (res != "" && res != null) {
-                    this.props.navigator.showLocalAlert(
-                        `You have received a drop`,
-                        Alerts.notice
-                    )
-                    setTimeout(() => {
-                        this.props.navigator.push(
-                            'viewDrop', { dropId: dropId }
-                    )} , 3000);
-                }
-            })
-            .catch(r => {
-                console.log(r.message)
-        })
-    }
-
+    //     getRequest('explore', params)
+    //         .then(res => {
+    //             console.log(res)
+    //             const dropId = res
+    //             if (res != "" && res != null) {
+    //                 this.props.navigator.showLocalAlert(
+    //                     `You have received a drop`,
+    //                     Alerts.notice
+    //                 )
+    //                 setTimeout(() => {
+    //                     this.props.navigator.push(
+    //                         'viewDrop', { dropId: dropId }
+    //                 )} , 3000);
+    //             }
+    //         })
+    //         .catch(r => {
+    //             console.log(r.message)
+    //     })
+    // }
 
 
     render() {
