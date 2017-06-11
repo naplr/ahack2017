@@ -54,9 +54,13 @@ export default class RootNavigation extends React.Component {
                 const dropId = res
                 if (res != "" && res != null) {
                     this.props.navigator.showLocalAlert(
-                        `Push notification: ${dropId}`,
+                        `You have received a drop`,
                         Alerts.notice
                     )
+                    setTimeout(() => {
+                        this.props.navigator.push(
+                            'viewDrop', { dropId: dropId }
+                    )} , 3000);
                 }
             })
             .catch(r => {
