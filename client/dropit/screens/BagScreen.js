@@ -55,15 +55,6 @@ export default class BagScreen extends React.Component {
                     { this.state.myDrops.map(d => {
                         return (
                             <View 
-                                onResponderMove={(e) => {
-                                    const dropInfo = {
-                                        id: d.id,
-                                        name: d.name,
-                                        creator: d.creator,
-                                        image: d.image
-                                    }
-                                    this.props.navigator.push('viewDrop', { dropInfo: dropInfo })
-                                }}
                                 style={{width: '100%', flexDirection:'row',justifyContent:'flex-start', marginTop:20,backgroundColor:'#ffffff' } }
                             >
                                 <View>
@@ -73,15 +64,23 @@ export default class BagScreen extends React.Component {
                                 </View>
                                 <View style={{flex: 1, flexDirection:'column',justifyContent:'space-between', padding:10}} >
                                     <View style={{width:150}}>
-                                        <Text style={sharedStyles.fontMainBig}>
+                                        <Text style={sharedStyles.fontMainBig} onPress={() => {
+                                            const dropInfo = {
+                                                id: d.id,
+                                                name: d.name,
+                                                creator: d.creator,
+                                                image: d.image
+                                            }
+                                            this.props.navigator.push('viewDrop', { dropInfo: dropInfo })
+                                        }}>
                                             {`${d.name}`}
                                         </Text>
                                     </View>
-                                    {/*<View>
+                                    <View>
                                         <Text style={sharedStyles.fontGrey}>
-                                            {`Picked date: ${d.from_date}`}
+                                            {`Picked date: ${moment(d.received).format('ddd MMMM DD YYYY')}`}
                                         </Text>
-                                    </View>*/}
+                                    </View>
                                     <View>
                                         <Text style={sharedStyles.fontGrey}>
                                             {`Dropped by: ${d.creator}`}
