@@ -150,7 +150,7 @@ def get_drops(request):
                 'name': x.name,
                 'image': x.image.url,
                 'creator': x.creator.first().userId,
-                'received': x.userdrop.date
+                'received': x.userdrop.first().date
             })
             
         return JsonResponse(list(res), safe=False)
